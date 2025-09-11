@@ -15,42 +15,37 @@ console.log('Token.js sedang dijalankan!');
     COURSE_DATA: 'mentari_course_data',
     LAST_UPDATE: 'mentari_last_update',
     STUDENT_GROUPS: 'mentari_student_groups',
+    ACTIVATION_KEY: 'mentariUserKey',
   };
 
   // Fungsi untuk memeriksa update dan versi minimum (KILL SWITCH)
   async function checkForUpdates() {
     try {
-      // Ambil info versi dari remote (GitHub)
       const versionInfoUrl = 'https://raw.githubusercontent.com/AnandaAnugrahHandyanto/mentari_unpam-mod/main/version_info.json?_=' + new Date().getTime();
-      const response = await fetch(versionInfoUrl);
-      if (!response.ok) {
-        console.error('Gagal mengambil info versi dari GitHub.');
-        return; // Gagal mengambil, biarkan ekstensi berjalan
+      const versionResponse = await fetch(versionInfoUrl);
+      if (!versionResponse.ok) {
+        console.error('Gagal mengambil info versi.');
+        return { isBlocked: false, updateAvailable: null };
       }
-      const versionInfo = await response.json();
+      const versionInfo = await versionResponse.json();
       const minVersion = versionInfo.min_version;
 
-      // Ambil versi lokal yang sedang digunakan
+      // Ambil versi lokal
       let localVersion;
-      if (window.mentariModVersion) {
-        localVersion = window.mentariModVersion;
+      const tokenScriptElement = document.getElementById('mentari-mod-token-script');
+      if (tokenScriptElement && tokenScriptElement.dataset.version) {
+        localVersion = tokenScriptElement.dataset.version;
       } else {
-        const tokenScriptElement = document.getElementById('mentari-mod-token-script');
-        if (tokenScriptElement && tokenScriptElement.dataset.version) {
-          localVersion = tokenScriptElement.dataset.version;
-        } else {
-          console.warn('Tidak dapat menentukan versi lokal ekstensi.');
-          return; // Tidak bisa cek, biarkan berjalan
-        }
+        return { isBlocked: false, updateAvailable: null };
       }
-
-      const isOutdated = (local, min) => {
+      
+      const isOutdated = (local, ref) => {
           const partsLocal = local.split('.').map(Number);
-          const partsMin = min.split('.').map(Number);
-          const len = Math.max(partsLocal.length, partsMin.length);
+          const partsRef = ref.split('.').map(Number);
+          const len = Math.max(partsLocal.length, partsRef.length);
           for (let i = 0; i < len; i++) {
               const p1 = partsLocal[i] || 0;
-              const p2 = partsMin[i] || 0;
+              const p2 = partsRef[i] || 0;
               if (p1 < p2) return true;
               if (p1 > p2) return false;
           }
@@ -58,9 +53,9 @@ console.log('Token.js sedang dijalankan!');
       };
 
       if (isOutdated(localVersion, minVersion)) {
-          console.error(`Versi ekstensi usang (${localVersion}). Versi minimum: ${minVersion}. Memblokir fungsi...`);
+          console.error(`Versi usang (${localVersion}). Minimum: ${minVersion}. Memblokir fungsi.`);
           showForceUpdatePopup();
-          return true; // Mengembalikan true untuk menandakan ekstensi diblokir
+          return { isBlocked: true, updateAvailable: null };
       }
 
       const manifestUrl = 'https://raw.githubusercontent.com/AnandaAnugrahHandyanto/mentari_unpam-mod/main/manifest.json?_=' + new Date().getTime();
@@ -68,59 +63,34 @@ console.log('Token.js sedang dijalankan!');
       const remoteManifest = await manifestResponse.json();
       const remoteVersion = remoteManifest.version;
 
-      if (!isOutdated(remoteVersion, localVersion) && remoteVersion !== localVersion) {
+      if (isOutdated(localVersion, remoteVersion)) {
         console.log(`Pembaruan tersedia: v${remoteVersion}`);
-        // Anda bisa menambahkan notifikasi visual di sini jika mau
+        return { isBlocked: false, updateAvailable: remoteVersion }; // Kirim info versi baru
       }
 
     } catch (error) {
       console.error('Error saat memeriksa pembaruan:', error);
     }
-    return false; // Mengembalikan false jika ekstensi tidak diblokir
+    return { isBlocked: false, updateAvailable: null }; // Default jika tidak ada update atau error
   }
 
   // Fungsi untuk menampilkan popup paksa update
   function showForceUpdatePopup() {
-    // Hapus popup ekstensi yang ada agar tidak bisa digunakan
     const existingPopup = document.getElementById('token-runner-popup');
-    if (existingPopup) {
-        existingPopup.remove();
-    }
-
-    // Buat overlay yang menutupi seluruh halaman
+    if (existingPopup) existingPopup.remove();
     const overlay = document.createElement('div');
-    overlay.style.cssText = `
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85); z-index: 1000000;
-      display: flex; justify-content: center; align-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    `;
-
+    overlay.style.cssText = `position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 1000001; display: flex; justify-content: center; align-items: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;`;
     const messageBox = document.createElement('div');
-    messageBox.style.cssText = `
-      background: #1e1e1e; color: #f0f0f0; padding: 30px;
-      border-radius: 12px; text-align: center; max-width: 400px;
-      border: 1px solid #333;
-    `;
-
+    messageBox.style.cssText = `background: #1e1e1e; color: #f0f0f0; padding: 30px; border-radius: 12px; text-align: center; max-width: 400px; border: 1px solid #333;`;
     messageBox.innerHTML = `
       <h2 style="margin-top:0; color: #e74c3c;">Versi Ekstensi Usang</h2>
-      <p style="color: #ccc; line-height: 1.6;">
-        Anda menggunakan versi MENTARI MOD yang sudah tidak didukung lagi. 
-        Silakan update ke versi terbaru untuk melanjutkan penggunaan dan mendapatkan fitur keamanan terbaru.
-      </p>
-      <a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest" 
-         target="_blank" 
-         style="display: inline-block; background: #e74c3c; color: white; padding: 12px 24px;
-                border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px;">
-         Update Sekarang
-      </a>
+      <p style="color: #ccc; line-height: 1.6;">Anda menggunakan versi MENTARI MOD yang sudah tidak didukung lagi. Silakan update ke versi terbaru untuk melanjutkan.</p>
+      <a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest" target="_blank" style="display: inline-block; background: #e74c3c; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px;">Update Sekarang</a>
     `;
-
     overlay.appendChild(messageBox);
     document.body.appendChild(overlay);
   }
-
+  
   // Fungsi untuk membuat modal konfirmasi kustom
   function createConfirmationModal() {
     if (document.getElementById('custom-confirm-modal')) return
@@ -1051,6 +1021,34 @@ console.log('Token.js sedang dijalankan!');
       font-size: 11px;
       color: #666;
   }
+  .settings-input {
+    width: 100%;
+    padding: 8px 12px;
+    background: #2a2a2a;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .token-button {
+    background: #0070f3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .token-button:hover {
+    background: #0060df;
+    transform: translateY(-1px);
+  }
   `;
     document.head.appendChild(style)
     document.body.appendChild(popup)
@@ -1482,184 +1480,170 @@ console.log('Token.js sedang dijalankan!');
 
   // Update user info UI
   function updateUserInfoUI(tokenInfo) {
-    const userInfoTab = document.getElementById('user-info-tab')
-    if (!userInfoTab || !tokenInfo) return
+  const userInfoTab = document.getElementById('user-info-tab');
+  if (!userInfoTab || !tokenInfo) return;
 
-    userInfoTab.innerHTML = `
-      <div class="token-card-wrapper">
-        <div class="token-card-header">
-          <h3 class="token-user-title">${tokenInfo.fullname}</h3>
-          <div class="token-role-badge">${tokenInfo.role}</div>
-        </div>
+  userInfoTab.innerHTML = `
+    <div class="token-card-wrapper">
+      <div class="token-card-header">
+        <h3 class="token-user-title">${tokenInfo.fullname}</h3>
+        <div class="token-role-badge">${tokenInfo.role}</div>
+      </div>
 
-        <div class="token-data-grid">
-          <div class="token-data-item">
-            <div class="token-info-section">
-              <p><span class="token-key">NIM :</span> <span class="token-value">${
-                tokenInfo.username
-              }</span></p>
-            </div>
-          </div>
-
-          <div class="token-data-item">
-            <div class="token-info-section">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p><span class="token-key">Gemini AI :</span></p>
-                <label class="switch">
-                  <input type="checkbox" id="gemini-toggle" ${
-                    localStorage.getItem('gemini_enabled') === 'true'
-                      ? 'checked'
-                      : ''
-                  }>
-                  <span class="slider round"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="token-data-item">
-            <div class="token-info-section">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p><span class="token-key">Auto Selesai Quiz :</span></p>
-                <label class="switch">
-                  <input type="checkbox" id="auto-finish-quiz-toggle" ${
-                    localStorage.getItem('auto_finish_quiz') === 'true'
-                      ? 'checked'
-                      : ''
-                  }>
-                  <span class="slider round"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="token-data-item">
-            <div class="token-info-section">
-              <button id="update-api-key" class="token-button" style="width: 100%;">
-                <i class="fas fa-key"></i> Update API Key
-              </button>
-            </div>
+      <div class="token-data-grid">
+        <div class="token-data-item">
+          <div class="token-info-section">
+            <p><span class="token-key">NIM :</span> <span class="token-value">${tokenInfo.username}</span></p>
           </div>
         </div>
 
-<div class="token-footer" style="display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 0.85rem; color: #ccc; line-height: 1.6;">
-  <div style="display: flex; align-items: center; gap: 6px;">
-    <span>Made with</span>
-    <img src="https://img.icons8.com/?size=100&id=H5H0mqCCr5AV&format=png&color=000000" style="width: 15px;" alt="love" />
-  </div>
+        <div class="token-data-item">
+          <div class="token-info-section">
+            <label for="activation-key-input" class="token-key">KEY Aktivasi:</label>
+            <input type="password" id="activation-key-input" class="settings-input" placeholder="Masukkan KEY Aktivasi">
+          </div>
+        </div>
+        <div class="token-data-item">
+          <div class="token-info-section">
+            <label for="gemini-api-key-input" class="token-key">API KEY Gemini:</label>
+            <input type="password" id="gemini-api-key-input" class="settings-input" placeholder="Masukkan API KEY Gemini">
+          </div>
+        </div>
+        <div class="token-data-item">
+          <button id="save-keys-btn" class="token-button" style="width: 100%;"><i class="fas fa-save"></i> Simpan KEY</button>
+        </div>
 
-    <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
-    <span>Lukman Muludin</span>
-    <a href="https://instagram.com/_.chopin" target="_blank">
-      <img src="https://img.icons8.com/?size=100&id=dz63urxyxSdO&format=png&color=ffffff" width="18" alt="Instagram" />
-    </a>
-    <a href="https://facebook.com/lukman.mauludin.754" target="_blank">
-      <img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff" width=18" alt="Facebook" />
-    </a>
-    <a href="https://github.com/Lukman754" target="_blank">
-      <img src="https://img.icons8.com/?size=100&id=62856&format=png&color=ffffff" width="18" alt="GitHub" />
-    </a>
-  </div>
+        <div class="token-data-item">
+          <div class="token-info-section">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <p class="token-key">Auto Selesai Quiz :</p>
+              <label class="switch">
+                <input type="checkbox" id="auto-finish-quiz-toggle" ${localStorage.getItem('auto_finish_quiz') === 'true' ? 'checked' : ''}>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="token-data-item">
+          <div class="token-info-section">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <p class="token-key">Auto Isi Kuisioner :</p>
+              <label class="switch">
+                <input type="checkbox" id="auto-fill-questionnaire-toggle" ${localStorage.getItem('auto_fill_questionnaire') === 'true' ? 'checked' : ''}>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="token-data-item">
+          <div class="token-info-section">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <p class="token-key">Gemini AI :</p>
+              <label class="switch">
+                <input type="checkbox" id="gemini-toggle" ${localStorage.getItem('gemini_enabled') === 'true' ? 'checked' : ''}>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
-    <span>Ananda Anugrah H</span>
-        <a href="https://instagram.com/nando_fiingerstyle" target="_blank">
-      <img src="https://img.icons8.com/?size=100&id=dz63urxyxSdO&format=png&color=ffffff" width="18" alt="Instagram" />
-    </a>
-    <a href="https://t.me/Vynix77" target="_blank">
-      <img src="https://img.icons8.com/?size=100&id=lUktdBVdL4Kb&format=png&color=ffffff" width="18" alt="Telegram" />
-    </a>
-        <a href="https://github.com/AnandaAnugrahHandyanto" target="_blank">
-      <img src="https://img.icons8.com/?size=100&id=62856&format=png&color=ffffff" width="18" alt="GitHub" />
-    </a>
-  </div>
-</div>
-    `
+      <div class="token-footer" style="display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 0.85rem; color: #ccc; line-height: 1.6;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span>Made with</span>
+            <img src="https://img.icons8.com/?size=100&id=H5H0mqCCr5AV&format=png&color=000000" style="width: 15px;" alt="love" />
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+            <span>Lukman Muludin</span>
+            <a href="https://instagram.com/_.chopin" target="_blank">
+              <img src="https://img.icons8.com/?size=100&id=dz63urxyxSdO&format=png&color=ffffff" width="18" alt="Instagram" />
+            </a>
+            <a href="https://facebook.com/lukman.mauludin.754" target="_blank">
+              <img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff" width="18" alt="Facebook" />
+            </a>
+            <a href="https://github.com/Lukman754" target="_blank">
+              <img src="https://img.icons8.com/?size=100&id=62856&format=png&color=ffffff" width="18" alt="GitHub" />
+            </a>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
+            <span>Ananda Anugrah H</span>
+                <a href="https://instagram.com/nando_fiingerstyle" target="_blank">
+              <img src="https://img.icons8.com/?size=100&id=dz63urxyxSdO&format=png&color=ffffff" width="18" alt="Instagram" />
+            </a>
+            <a href="https://t.me/Vynix77" target="_blank">
+              <img src="https://img.icons8.com/?size=100&id=lUktdBVdL4Kb&format=png&color=ffffff" width="18" alt="Telegram" />
+            </a>
+                <a href="https://github.com/AnandaAnugrahHandyanto" target="_blank">
+              <img src="https://img.icons8.com/?size=100&id=62856&format=png&color=ffffff" width="18" alt="GitHub" />
+            </a>
+          </div>
+        </div>
+    </div>
+  `;
 
-    // Add event listeners for new buttons
-    const geminiToggle = document.getElementById('gemini-toggle')
-    if (geminiToggle) {
-      // Load initial state from localStorage
-      const savedGeminiState = localStorage.getItem('gemini_enabled') === 'true'
-      geminiToggle.checked = savedGeminiState
+  const activationKeyInput = document.getElementById('activation-key-input');
+  const geminiApiKeyInput = document.getElementById('gemini-api-key-input');
+  const saveKeysBtn = document.getElementById('save-keys-btn');
+  const autoFinishQuizToggle = document.getElementById('auto-finish-quiz-toggle');
+  const autoFillQuestionnaireToggle = document.getElementById('auto-fill-questionnaire-toggle');
+  const geminiToggle = document.getElementById('gemini-toggle');
 
-      // Set initial visibility based on saved state
-      const geminiPopup = document.getElementById('geminiChatbot')
-      const geminiToggleBtn = document.getElementById('geminiChatbotToggle')
+  // Muat kunci yang tersimpan saat UI dimuat
+  activationKeyInput.value = localStorage.getItem(STORAGE_KEYS.ACTIVATION_KEY) || '';
+  const storedApiKey = localStorage.getItem('geminiApiKey');
+  geminiApiKeyInput.value = storedApiKey ? atob(storedApiKey) : '';
 
-      if (savedGeminiState) {
-        // If Gemini was enabled, show only the toggle button
-        if (geminiToggleBtn) {
-          geminiToggleBtn.style.display = 'flex'
-        }
-        if (geminiPopup) {
-          geminiPopup.style.display = 'none'
-        }
-      } else {
-        // If Gemini was disabled, hide both
-        if (geminiToggleBtn) {
-          geminiToggleBtn.style.display = 'none'
-        }
-        if (geminiPopup) {
-          geminiPopup.style.display = 'none'
-        }
-      }
+  // Event listener untuk tombol simpan
+  saveKeysBtn.addEventListener('click', async () => {
+    saveKeysBtn.disabled = true;
+    saveKeysBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memvalidasi...';
 
-      geminiToggle.addEventListener('change', function () {
-        const isEnabled = this.checked
-        localStorage.setItem('gemini_enabled', isEnabled)
+    const activationKey = activationKeyInput.value.trim();
+    const geminiApiKey = geminiApiKeyInput.value.trim();
 
-        // When toggle is enabled, only show the toggle button
-        const geminiToggleBtn = document.getElementById('geminiChatbotToggle')
-        if (geminiToggleBtn) {
-          geminiToggleBtn.style.display = isEnabled ? 'flex' : 'none'
-        }
-
-        // Always keep the chat interface hidden when toggle state changes
-        const geminiPopup = document.getElementById('geminiChatbot')
-        if (geminiPopup) {
-          geminiPopup.style.display = 'none'
-        }
-      })
-    }
-
-    // Toggle Auto Selesai Quiz
-    const autoFinishQuizToggle = document.getElementById(
-      'auto-finish-quiz-toggle'
-    )
-    if (autoFinishQuizToggle) {
-      autoFinishQuizToggle.checked =
-        localStorage.getItem('auto_finish_quiz') === 'true'
-      autoFinishQuizToggle.addEventListener('change', function () {
-        localStorage.setItem('auto_finish_quiz', this.checked)
-      })
-    }
-
-    // Add click event to toggle button to show chat interface
-    const geminiToggleBtn = document.getElementById('geminiChatbotToggle')
-    if (geminiToggleBtn) {
-      geminiToggleBtn.addEventListener('click', function () {
-        const geminiPopup = document.getElementById('geminiChatbot')
-        if (geminiPopup) {
-          geminiPopup.style.display = 'flex'
-        }
-      })
-    }
-
-    const updateApiKeyBtn = document.getElementById('update-api-key')
-    if (updateApiKeyBtn) {
-      updateApiKeyBtn.addEventListener('click', function () {
-        // Call showApiKeyPopup from apiKeyManager.js
-        if (typeof showApiKeyPopup === 'function') {
-          showApiKeyPopup()
+    if (activationKey) {
+        // Validasi kunci aktivasi sebelum menyimpan
+        const isValid = await validateActivationKeyOnServer(activationKey);
+        if (isValid) {
+            localStorage.setItem(STORAGE_KEYS.ACTIVATION_KEY, activationKey);
+            showCustomAlert('Kunci Aktivasi berhasil divalidasi dan disimpan!', 'success');
         } else {
-          console.error(
-            'showApiKeyPopup function not found. Make sure apiKeyManager.js is loaded.'
-          )
+            showCustomAlert('Kunci Aktivasi tidak valid. Silakan periksa kembali.', 'error');
+            saveKeysBtn.disabled = false;
+            saveKeysBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Kunci';
+            return; // Hentikan proses jika kunci aktivasi tidak valid
         }
-      })
     }
-  }
+
+    if (geminiApiKey) {
+      localStorage.setItem('geminiApiKey', btoa(geminiApiKey));
+    }
+    
+    showCustomAlert('Pengaturan berhasil disimpan!', 'success');
+    saveKeysBtn.disabled = false;
+    saveKeysBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Kunci';
+  });
+
+  // Event listener untuk toggle
+  autoFinishQuizToggle.addEventListener('change', function () {
+    localStorage.setItem('auto_finish_quiz', this.checked);
+  });
+  autoFillQuestionnaireToggle.addEventListener('change', function () {
+    localStorage.setItem('auto_fill_questionnaire', this.checked);
+  });
+  geminiToggle.addEventListener('change', function () {
+    const isEnabled = this.checked;
+    localStorage.setItem('gemini_enabled', isEnabled);
+    const geminiPopup = document.getElementById('geminiChatbot');
+    const geminiToggleBtn = document.getElementById('geminiChatbotToggle');
+    if (geminiToggleBtn) {
+      geminiToggleBtn.style.display = isEnabled ? 'flex' : 'none';
+    }
+    if (geminiPopup) {
+      geminiPopup.style.display = 'none';
+    }
+  });
+}
 
   // Update forum data UI
   async function updateForumUI(courseDataList) {
@@ -1670,10 +1654,23 @@ console.log('Token.js sedang dijalankan!');
     if (!forumList) return
     
     // Periksa update di sini, sebelum render UI utama
-    const isBlocked = await checkForUpdates();
-    if (isBlocked) return; // Jika diblokir, hentikan render UI
+    const updateStatus = await checkForUpdates();
+    if (updateStatus.isBlocked) return;
 
     let html = ''
+
+    // Tampilkan banner notifikasi jika ada update tersedia
+    if (updateStatus.updateAvailable) {
+        html += `
+        <div class="update-notification">
+            <div class="update-info">
+                <strong>Pembaruan Tersedia!</strong>
+                <span>Versi ${updateStatus.updateAvailable} telah dirilis.</span>
+            </div>
+            <a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest" target="_blank" class="update-button">Update</a>
+        </div>
+        `;
+    }
 
     // Add presensi button at the top
     html += `
@@ -2083,11 +2080,11 @@ console.log('Token.js sedang dijalankan!');
     })
 
     // Check if there's any content
-    if (html === '') {
+    if (html.includes('course-card') === false) { // Check if any course card was actually added
       forumList.innerHTML = `<div class="forum-no-data">Tidak ada forum diskusi yang tersedia</div>`
       return
     }
-
+    
     forumList.innerHTML = html
 
     // Add toggle function to window scope that closes other sections
@@ -2270,6 +2267,54 @@ console.log('Token.js sedang dijalankan!');
       const styleElement = document.createElement('style')
       styleElement.id = 'forum-ui-styles'
       styleElement.textContent = `
+      .update-notification {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #34495e;
+        width: 100%;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+      }
+
+      .update-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .update-info strong {
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .update-info span {
+        font-size: 12px;
+        opacity: 0.9;
+      }
+
+      .update-button {
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 13px;
+        transition: background-color 0.2s ease;
+        white-space: nowrap;
+      }
+
+      .update-button:hover {
+        background-color: #2980b9;
+      }
+      
       /* Forum UI Dark Theme - Max width 500px with Collapsible Sections */
       /* Course Card Styles */
       .course-card {
@@ -3927,19 +3972,21 @@ console.log('Token.js sedang dijalankan!');
 
   window.fetchCoursesList = fetchCoursesListAndDetails
 
-  // Fungsi untuk menghapus cache data
-  window.clearCacheData = function () {
-    localStorage.removeItem(STORAGE_KEYS.COURSE_DATA)
-    localStorage.removeItem(STORAGE_KEYS.LAST_UPDATE)
-    console.log(
-      'Cache data berhasil dihapus. Refresh halaman untuk mengambil data baru.'
-    )
-  }
+window.clearCacheData = function () {
+  localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN)
+  localStorage.removeItem(STORAGE_KEYS.USER_INFO)
+  localStorage.removeItem(STORAGE_KEYS.COURSE_DATA)
+  localStorage.removeItem(STORAGE_KEYS.LAST_UPDATE)
+  localStorage.removeItem(STORAGE_KEYS.STUDENT_GROUPS)
+  console.log(
+    'Cache data dan info user berhasil dihapus. Mengambil data baru...'
+  )
+}
   
   // Modifikasi fungsi init()
   async function init() {
-    const isBlocked = await checkForUpdates();
-    if (isBlocked) {
+    const updateStatus = await checkForUpdates();
+    if (updateStatus.isBlocked) {
         // Jika ekstensi diblokir, hentikan semua inisialisasi lainnya
         return;
     }
