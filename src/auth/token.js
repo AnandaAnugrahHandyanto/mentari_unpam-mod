@@ -456,6 +456,8 @@ console.log('Token.js sedang dijalankan!');
     const style = document.createElement('style')
     style.textContent = `
     #token-runner-popup {
+      max-height: 90vh;
+      overflow: hidden;
       position: fixed;
       left: 15px !important;
       background: #1e1e1e;
@@ -615,7 +617,6 @@ console.log('Token.js sedang dijalankan!');
 
   .popup-content {
     padding-top: 12px;
-    max-height: 500px;
     display: flex;
     flex-direction: column;
     transition: opacity 0.3s ease;
@@ -705,11 +706,14 @@ console.log('Token.js sedang dijalankan!');
 
   .token-tabs {
     display: flex;
-    padding: 0 12px;
-    margin-top: 8px;
+    gap: 6px;
+    overflow: hidden;
+    user-select: none;
+    cursor: grab;
   }
 
   .token-tab {
+    flex: 0 0 auto;
     padding: 6px 12px;
     background: transparent;
     border: none;
@@ -742,7 +746,8 @@ console.log('Token.js sedang dijalankan!');
   .token-tab-content {
     display: none;
     padding: 10px;
-    flex: 1;
+    flex: 1 1 auto;
+    max-height: calc(90vh - 120px);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #333 transparent;
@@ -1068,6 +1073,54 @@ console.log('Token.js sedang dijalankan!');
   `;
     document.head.appendChild(style);
     document.body.appendChild(popup);
+
+    // Enable drag-scroll
+    (function enableDragScroll() {
+      const tabs = document.querySelector('.token-tabs');
+      if (!tabs) return;
+      
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+    // PC (mouse)
+    tabs.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - tabs.offsetLeft;
+      scrollLeft = tabs.scrollLeft;
+      tabs.style.cursor = 'grabbing';
+    });
+    tabs.addEventListener('mouseleave', () => {
+    isDown = false;
+    tabs.style.cursor = 'default';
+  });
+  tabs.addEventListener('mouseup', () => {
+    isDown = false;
+    tabs.style.cursor = 'default';
+  });
+  tabs.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - tabs.offsetLeft;
+    const walk = (x - startX) * 1.5; // kecepatan scroll
+    tabs.scrollLeft = scrollLeft - walk;
+  });
+
+  // Mobile (touch)
+let touchStartX = 0;
+let startScrollLeft = 0;
+
+tabs.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].pageX;
+  startScrollLeft = tabs.scrollLeft;
+}, { passive: true });
+
+tabs.addEventListener('touchmove', (e) => {
+  const x = e.touches[0].pageX;
+  const deltaX = x - touchStartX;
+  tabs.scrollLeft = startScrollLeft - deltaX;
+}, { passive: true });
+})();
 
     // EVENT LISTENER BARU UNTUK TOMBOL CATATAN
     document
@@ -1929,13 +1982,13 @@ document.querySelectorAll('.forum-topics').forEach(container => {
     const groupResultsCard = `
     <div class="data-card" id="group-results-card" style="display: none;">
       <div class="card-header">
-        <h3 class="card-title">Hasil Pengelompokan <span id="group-total-info" class="group-total-info"></span></h3>
+        <h3 class="card-title">Hasil kelompok <span id="group-total-info" class="group-total-info"></span></h3>
         <div class="card-actions">
           <button id="copy-all-groups-btn" class="secondary-btn">
-            <i class="fas fa-copy"></i> Copy Data
+            <i class="fas fa-copy"></i>
           </button>
           <button id="delete-groups-btn" class="danger-btn">
-            <i class="fas fa-trash-alt"></i> Hapus Kelompok
+            <i class="fas fa-trash-alt"></i> 
           </button>
         </div>
       </div>
