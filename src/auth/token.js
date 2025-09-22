@@ -403,6 +403,57 @@ console.log('Token.js sedang dijalankan!');
     showSkeletonLoading('forum-list');
 
     const commonStyles = `
+.version-info-banner {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+.version-info-banner .version-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.version-info-banner .version-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+.version-info-banner .version-text .label {
+    font-size: 12px;
+    color: #888;
+}
+.version-info-banner .version-text .version-number {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f0f0f0;
+}
+.version-info-banner .status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.status-badge.latest {
+    background: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+}
+.status-badge.update-available {
+    background: rgba(241, 196, 15, 0.15);
+    color: #f1c40f;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.status-badge.update-available:hover {
+    background: rgba(241, 196, 15, 0.25);
+}
       .custom-alert-mentari {
             position: fixed;
             top: 20px;
@@ -1691,46 +1742,40 @@ function extractCourseCodeFromUrl(url) {
       .sort((a, b) => a.dayOrder - b.dayOrder);
   }
 
-  async function updateForumUI(courseDataList) {
+async function updateForumUI(courseDataList) {
     const processedCourses = processAndSortCourses(courseDataList);
     const forumTab = document.getElementById('forum-data-tab');
     if (!forumTab) return;
 
     const forumList = document.getElementById('forum-list');
     if (!forumList) return;
-    
+
     const updateStatus = await checkForNotificationUpdate();
+    const localVersion = typeof window.mentariModVersion !== 'undefined' ? window.mentariModVersion : '5.7'; // Fallback ke versi manifest
+    const latestVersion = updateStatus ? updateStatus.updateAvailable : null;
 
     let html = '';
 
-    if (updateStatus && updateStatus.updateAvailable) {
-        const newVersion = updateStatus.updateAvailable;
-        html += `
-        <div class="update-notification-internal">
-            <div class="update-info">
-                <strong>Pembaruan Tersedia!</strong>
-                <span>Versi ${newVersion} telah dirilis.</span>
-            </div>
-            <a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest" target="_blank" class="update-button">Update</a>
+    html += `
+    <div class="version-info-banner">
+      <div class="version-details">
+        <img src="https://raw.githubusercontent.com/AnandaAnugrahHandyanto/mentari_unpam-mod/main/assets/icons/icon.png" alt="Version Icon" class="version-icon">
+        <div class="version-text">
+          <div class="label">Versi Terinstall</div>
+          <div class="version-number">v${localVersion}</div>
         </div>
-        `;
-
-        const styleId = 'mentari-internal-update-style';
-        if (!document.getElementById(styleId)) {
-            const style = document.createElement('style');
-            style.id = styleId;
-            style.textContent = `
-              .update-notification-internal { margin-bottom: 12px; background-color: #2c3e50; color: #ecf0f1; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #34495e; }
-              .update-notification-internal .update-info { display: flex; flex-direction: column; line-height: 1.4; }
-              .update-notification-internal .update-info strong { font-weight: bold; font-size: 14px; }
-              .update-notification-internal .update-info span { font-size: 12px; opacity: 0.9; }
-              .update-notification-internal .update-button { background-color: #3498db; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 13px; transition: background-color 0.2s ease; white-space: nowrap; }
-              .update-notification-internal .update-button:hover { background-color: #2980b9; }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-
+      </div>
+      ${
+        latestVersion && latestVersion !== localVersion
+          ? `<a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest" target="_blank" class="status-badge update-available">
+               🎉 Update v${latestVersion}
+             </a>`
+          : `<div class="status-badge latest">
+               ✅ Terkini
+             </div>`
+      }
+    </div>
+    `;
     html += `
     <div class="copy-links-container">
       <a href="https://my.unpam.ac.id/presensi/" target="_blank" id="presensi" class="presensi-button">
