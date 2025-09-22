@@ -70,9 +70,9 @@ if (window.location.href === 'https://mentari.unpam.ac.id/login') {
     button.addEventListener('click', clickButton)
 
     // Auto-click dengan delay 1 detik
-    setTimeout(function () {
-      console.log('Auto-clicking Start Tracking button after 1 second delay')
-      clickButton()
-    }, 1000)
+    // setTimeout(function () {
+    //   console.log('Auto-clicking Start Tracking button after 1 second delay')
+    //   clickButton()
+    // }, 1000)
   })()
 }

@@ -1,5 +1,6 @@
 # Changelog
 
-## [5.5] - 22 September 2025
+## [5.6] - 22 September 2025
 
-- **[Perbaikan] Interaksi Antar Pop-up**: Menyempurnakan logika untuk memastikan pop-up Gemini dan Mentari MOD selalu berinteraksi dengan benar (saling menutup/menyembunyikan) tanpa ada bug.
+- **[Fix]** Menyelesaikan konflik yang menyebabkan tombol pop-up Asisten Gemini tidak muncul saat pemuatan awal, terutama di WebView seluler. Panel MOD utama tidak akan lagi terbuka secara otomatis untuk memastikan kedua elemen UI dimuat dengan benar.
+- **[Tweak]** Meningkatkan stabilitas rendering elemen UI mengambang di lingkungan WebView.
