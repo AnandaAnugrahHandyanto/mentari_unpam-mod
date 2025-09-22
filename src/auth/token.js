@@ -1236,28 +1236,29 @@ console.log('Token.js sedang dijalankan!');
     document.addEventListener('touchend', stopDrag);
     
     const toggle = popup.querySelector('.popup-toggle');
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        
-        const isOpeningMod = popup.classList.contains('collapsed');
-        const geminiToggle = document.getElementById('geminiChatbotToggle');
-        
-        if (isOpeningMod) {
-          if (geminiToggle) {
+    toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    const isOpeningMod = popup.classList.contains('collapsed');
+    const geminiToggle = document.getElementById('geminiChatbotToggle');
+
+    if (isOpeningMod) {
+        if (geminiToggle) {
             geminiToggle.style.display = 'none';
-          }
-          const geminiPopup = document.getElementById('geminiChatbot');
-          if (geminiPopup && !geminiPopup.classList.contains('hidden')) {
+        }
+        const geminiPopup = document.getElementById('geminiChatbot');
+        if (geminiPopup && !geminiPopup.classList.contains('hidden')) {
             geminiPopup.classList.add('hidden');
         }
-        } else {
-          if (geminiToggle) {
+    }
+    else {
+        if (geminiToggle) {
             geminiToggle.style.display = 'flex';
         }
     }
 
     popup.classList.toggle('collapsed');
-  });
+});
 
     document.getElementById('token-reset-btn').addEventListener('click', refreshAndTrackWithLoading);
 

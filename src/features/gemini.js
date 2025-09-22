@@ -347,15 +347,22 @@ function setupChatbotEventListeners(encodedApiKey) {
     if (!chatbotToggle || !chatbot) return;
 
     chatbotToggle.addEventListener('click', () => {
-        const isOpeningGemini = chatbot.classList.contains('hidden');
-        const tokenRunnerPopup = document.getElementById('token-runner-popup');
-        if (isOpeningGemini) {
-            if (tokenRunnerPopup) { tokenRunnerPopup.style.display = 'none'; tokenRunnerPopup.classList.add('collapsed'); }
-        } else {
-            if (tokenRunnerPopup) { tokenRunnerPopup.style.display = 'block'; }
+    const isOpeningGemini = chatbot.classList.contains('hidden');
+    const tokenRunnerPopup = document.getElementById('token-runner-popup');
+
+    if (isOpeningGemini) {
+        if (tokenRunnerPopup) {
+            tokenRunnerPopup.style.display = 'none';
         }
-        chatbot.classList.toggle('hidden');
-    });
+    }
+    else {
+        if (tokenRunnerPopup) {
+            tokenRunnerPopup.style.display = 'block';
+        }
+    }
+
+    chatbot.classList.toggle('hidden');
+});
 
     closeChatButton.addEventListener('click', () => {
         chatbot.classList.add('hidden');
