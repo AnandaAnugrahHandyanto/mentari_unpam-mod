@@ -1751,7 +1751,7 @@ async function updateForumUI(courseDataList) {
     if (!forumList) return;
 
     const updateStatus = await checkForNotificationUpdate();
-    const localVersion = typeof window.mentariModVersion !== 'undefined' ? window.mentariModVersion : '5.7'; // Fallback ke versi manifest
+    const localVersion = typeof window.mentariModVersion !== 'undefined' ? window.mentariModVersion : '5.7';
     const latestVersion = updateStatus ? updateStatus.updateAvailable : null;
 
     let html = '';

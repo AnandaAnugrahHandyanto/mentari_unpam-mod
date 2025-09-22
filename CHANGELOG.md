@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.8] - 22 September 2025
+## [5.9] - 22 September 2025
 
 ### ✨ Fitur Baru
 - **Banner Versi & Notifikasi Pembaruan:** Menambahkan banner informatif di bagian atas **Tab Forum** untuk menampilkan versi ekstensi yang sedang terinstall.
@@ -8,3 +8,5 @@
 
 ### 🎨 Peningkatan UI
 - Mengintegrasikan UI banner versi baru dengan desain *Glassmorphism* yang sudah ada pada dasbor untuk tampilan yang konsisten dan modern.
+
+### Bump version to v5.9
