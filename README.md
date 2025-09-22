@@ -3,154 +3,144 @@
 
 # MENTARI MOD
 
-### _Manajemen Terpadu Pembelajaran Daring_
+### ✨ *Manajemen Terpadu Pembelajaran Daring UNPAM yang Ditingkatkan* ✨
 
-[![GitHub issues](https://img.shields.io/github/issues/AnandaAnugrahHandyanto/mentari_unpam-mod?color=green&style=for-the-badge)](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/issues)
-[![GitHub stars](https://img.shields.io/github/stars/AnandaAnugrahHandyanto/mentari_unpam-mod?style=for-the-badge)](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/stargazers)
-[![GitHub license](https://img.shields.io/github/license/Lukman754/mentari-unpam?style=for-the-badge)](https://github.com/Lukman754/mentari-unpam)
-
+<p align="center">
+<a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/actions/workflows/release.yml">
+<img src="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/actions/workflows/release.yml/badge.svg" alt="Auto Release Status">
+</a>
+<a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest">
+<img src="https://img.shields.io/github/v/release/AnandaAnugrahHandyanto/mentari_unpam-mod?style=flat-square&color=blue" alt="Rilis Terbaru">
+</a>
+<img src="https://img.shields.io/badge/Platform-Chromium-brightgreen?style=flat-square&logo=google-chrome" alt="Platform">
+<img src="https://img.shields.io/badge/Powered%20by-Ananda Anugrah H-blueviolet?style=flat-square" alt="Powered by Ananda Anugrah H">
+</p>
+<p align="center">
+<a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/issues">
+<img src="https://img.shields.io/github/issues/AnandaAnugrahHandyanto/mentari_unpam-mod?style=flat-square&color=green" alt="Isu Terbuka">
+</a>
+<a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/stargazers">
+<img src="https://img.shields.io/github/stars/AnandaAnugrahHandyanto/mentari_unpam-mod?style=flat-square" alt="Bintang GitHub">
+</a>
+<a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/blob/main/LICENSE">
+<img src="https://img.shields.io/github/license/AnandaAnugrahHandyanto/mentari_unpam-mod?style=flat-square" alt="Lisensi GitHub">
+</a>
+</p>
 </div>
 
-## 🚀 Tentang MENTARI
+## 🚀 Tentang Proyek
 
-**MENTARI** (_Manajemen Terpadu Pembelajaran Daring_) adalah platform pembelajaran digital modern yang dirancang untuk menggantikan [e-learning.unpam.ac.id](https://e-learning.unpam.ac.id). Platform ini menawarkan pengalaman belajar yang lebih intuitif, efisien, dan menyenangkan bagi civitas akademika Universitas Pamulang.
+**MENTARI MOD** adalah sebuah ekstensi browser yang dirancang untuk memperkaya dan memaksimalkan pengalaman belajar pada platform **MENTARI (*Manajemen Terpadu Pembelajaran Daring*)** Universitas Pamulang. Ekstensi ini menambahkan serangkaian fitur canggih yang tidak tersedia secara *default*, mengubah cara mahasiswa berinteraksi dengan sistem pembelajaran daring.
 
-**MENTARI MOD** hadir sebagai ekstensi browser yang memperkaya platform ini dengan berbagai fitur tambahan untuk memaksimalkan produktivitas dalam pembelajaran daring.
+Dengan antarmuka modern berkonsep **"Glassmorphism"**, akses fitur yang lebih cepat, dan integrasi kecerdasan buatan (AI), MENTARI MOD bertujuan untuk membuat proses belajar menjadi lebih efisien, produktif, dan menyenangkan.
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/13180860-d3fd-4a38-8043-9171dc8d4a17" width="85%" alt="Mentari Mod Preview">
+<img src="https://github.com/user-attachments/assets/13180860-d3fd-4a38-8043-9171dc8d4a17" width="85%" alt="Mentari Mod Preview">
 </div>
 
-## 💫 Mengapa MENTARI MOD?
+-----
 
-| Keunggulan           | Deskripsi                                                           |
-| -------------------- | ------------------------------------------------------------------- |
-| 🎨 **Desain Modern** | Antarmuka yang intuitif dengan tampilan yang segar dan kontemporer  |
-| 🔍 **Akses Cepat**   | Forum diskusi dapat diakses tanpa perlu membuka setiap pertemuan    |
-| 🤖 **Bantuan AI**    | Asisten berbasis kecerdasan buatan untuk meningkatkan produktivitas |
-| 🎯 **Efisiensi**     | Menghemat waktu dengan fitur otomatisasi tugas yang repetitif       |
+## 💎 Fitur Unggulan
 
-## 💎 Fitur Utama
+MENTARI MOD hadir dengan berbagai fitur yang dirancang untuk membantu mahasiswa.
 
-### 🧩 Mentari Mod
+### 🧩 **Peningkatan Antarmuka & Produktivitas**
 
-- **📊 Info Profil** — Menampilkan nama dan NIM mahasiswa secara jelas dan transparan
-- **💬 Pelacakan Forum** — Melihat forum aktif dan opsi menyembunyikan course yang telah selesai
-- **👥 Pengelolaan Kelas** — Akses cepat ke daftar mahasiswa dalam kelas untuk kolaborasi
-- **🔄 Pembagian Kelompok** — Fitur untuk mengelompokkan mahasiswa dengan jumlah yang dapat disesuaikan
+  - **Dashboard Terpusat**: UI modern untuk melihat forum aktif, notifikasi balasan dosen, daftar mahasiswa, dan membuat catatan pribadi untuk setiap mata kuliah.
+  - **Manajemen Kelompok**: Bagikan mahasiswa ke dalam kelompok secara acak atau berurutan dengan mudah.
+  - **Rekap Presensi**: Lihat ringkasan dan detail persentase kehadiran semua mata kuliah dalam satu tabel interaktif tanpa perlu membuka halaman KHS.
+  - **Auto Login**: *Username* dan *password* terisi otomatis di halaman login MENTARI dan MyUNPAM.
+  - **Desain Modern**: Tampilan antarmuka yang lebih segar dan elegan dengan efek "Glassmorphism".
 
-### 📝 Quiz Helper
+### 🤖 **Asisten AI & Otomatisasi**
 
-- **✅ Jawaban Otomatis** — Menjawab semua soal quiz secara otomatis tanpa intervensi manual
-- **⏱️ Penghematan Waktu** — Fokus pada pemahaman materi, bukan pada mekanisme pengisian kuis
+  - **🤖 Gemini Assistant**: Chatbot AI terintegrasi untuk menjawab pertanyaan, menjelaskan materi, dan menyalin soal dari halaman kuis atau forum.
+  - **✅ Bantuan Kuis Otomatis**: Selesaikan kuis secara otomatis dengan jawaban yang dianalisis oleh AI.
+  - **📝 Bantuan Forum Diskusi**: Dapatkan rangkuman atau jawaban untuk topik diskusi dosen dan buat pertanyaan relevan dengan sekali klik.
+  - **📋 Pengisian Kuesioner Cepat**: Isi kuesioner dosen dan survei KHS secara otomatis dengan berbagai mode pilihan (Setuju, Acak, atau berdasarkan rating).
 
-### 🤖 Gemini Assistant
+-----
 
-- **💬 Chatbot AI** — Asisten berbasis AI menggunakan model gemini-2.0-flash-thinking
-- **📋 Format Prompt** — Berbagai pilihan format respons untuk kebutuhan yang berbeda
-- **📥 Paste Questions** — Ekstraksi otomatis pertanyaan dari dosen atau soal kuis
-- **📤 Copy To Textarea** — Transfer jawaban AI langsung ke kotak teks respons
+## 📦 Instalasi
 
-## 📱 Demo & Tampilan
+### 📺 **Video Tutorial**
 
 <div align="center">
-  <table>
-    <tr>
-      <td width="50%">
-        <img src="https://github.com/user-attachments/assets/b19f5120-c127-4003-9d58-5f7d1b3d9fac" width="100%" alt="Login Page">
-        <p align="center"><b>Halaman Login</b></p>
-      </td>
-      <td width="50%">
-        <img src="https://github.com/user-attachments/assets/13180860-d3fd-4a38-8043-9171dc8d4a17" width="100%" alt="Mentari Mod">
-        <p align="center"><b>Dashboard dengan Mod</b></p>
-      </td>
-    </tr>
-  </table>
+<a href="[https://youtu.be/4CDs7ZwEq0c](https://youtu.be/4CDs7ZwEq0c)" target="_blank">
+<img src="https://img.youtube.com/vi/4CDs7ZwEq0c/0.jpg" width="60%" alt="Tutorial Video">
+<p>Klik untuk menonton tutorial instalasi lengkap</p>
+</a>
 </div>
 
-## 📦 Download
+### **💻 Windows/macOS (Browser Berbasis Chromium)**
 
-<div style="width: 100%; display: flex; gap: 10px;">
-    <a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/download/v5.0/MentariEnhancer_v5.0.zip" style="display: block; width: 60%;">
-        <img src="https://img.shields.io/badge/Download-Extension%20ZIP-FFA000?style=for-the-badge&logo=googlechrome" style="width: 60%;">
-    </a>
-    <a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/download/v5.0/MentariEnhancer_v5.0.apk" style="display: block; width: 60%;">
-        <img src="https://img.shields.io/badge/Download-Android%20APK-3DDC84?style=for-the-badge&logo=android" style="width: 60%;">
-    </a>
+> Langkah-langkah ini berlaku untuk Google Chrome, Microsoft Edge, Brave, dll.
 
-</div>
+1.  Unduh file **`MentariEnhancer_v5.7.zip`** dari [halaman rilis terbaru](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest).
+2.  Ekstrak file `.zip` tersebut ke sebuah folder.
+3.  Buka browser Anda dan navigasi ke `chrome://extensions/`.
+4.  Aktifkan **"Mode Pengembang"** (Developer Mode) di pojok kanan atas.
+5.  Klik tombol **"Muat yang belum dibuka"** (Load unpacked) dan pilih folder tempat Anda mengekstrak file tadi.
+6.  Ekstensi siap digunakan\! ✨
 
-## 📥 Cara Instalasi
+### **📱 Android & iOS (Mises Browser)**
 
-### 📺 Video Tutorial
+1.  Unduh **Mises Browser** dari App Store atau Play Store.
+2.  Buka Mises Browser, unduh file **`MentariEnhancer_v5.1.zip`**.
+3.  Ketuk menu (tiga titik) dan pilih **"Extensions"**.
+4.  Aktifkan **"Developer Mode"**.
+5.  Klik **"+ (from .zip/.crx/.user.js)"** dan pilih file `.zip` yang sudah diunduh.
+6.  Refresh halaman MENTARI untuk melihat perubahannya\! ✨
 
-<div align="center">
-  <a href="https://youtu.be/4CDs7ZwEq0c" target="_blank">
-    <img src="https://img.youtube.com/vi/4CDs7ZwEq0c/0.jpg" width="60%" alt="Tutorial Video">
-    <p>Klik untuk menonton tutorial instalasi lengkap</p>
-  </a>
-</div>
+-----
 
-### 💻 Windows/macOS (Chrome, Edge, Brave)
-
-```
-1️⃣ Unduh file ekstensi mentari-mod.zip
-2️⃣ Ekstrak file zip ke folder di komputer Anda
-3️⃣ Buka browser Chromium (Chrome/Edge/Brave)
-4️⃣ Ketik chrome://extensions/ di address bar
-5️⃣ Aktifkan "Mode Pengembang" (toggle di pojok kanan)
-6️⃣ Klik "Load unpacked" dan pilih folder hasil ekstraksi
-7️⃣ Ekstensi siap digunakan! ✨
-```
-
-### 📱 Mises Browser (iOS/Android)
-
-```
-1️⃣ Download Mises Browser (AppStore/PlayStore)
-2️⃣ Buka Mises Browser di perangkat Anda
-3️⃣ Ketuk menu (tiga titik) di pojok kanan atas
-4️⃣ Pilih "Extensions"
-5️⃣ Aktifkan "Developer Mode"
-6️⃣ Klik "+ (from .zip/.crx/.user.js)"
-7️⃣ Pilih file mentari-unpam-main.zip
-8️⃣ Refresh halaman MENTARI ✨
-```
-
-## ❓ FAQ
+## ❓ FAQ (Tanya Jawab)
 
 <details>
 <summary><b>🔒 Apakah ekstensi ini aman digunakan?</b></summary>
 <div style="padding: 10px;">
-  Ya, ekstensi ini dikembangkan khusus untuk membantu mahasiswa UNPAM dalam pembelajaran daring. Kami tidak mengumpulkan data pribadi pengguna. Semua fitur berjalan di sisi klien dan tidak mengirimkan data ke server eksternal.
+Ya, ekstensi ini aman. Kami tidak mengumpulkan data pribadi. Semua proses berjalan di sisi klien (browser Anda). Permintaan ke API Google Gemini hanya dilakukan saat Anda menggunakan fitur AI dan memerlukan kunci API pribadi Anda, yang disimpan secara terenkripsi di browser Anda.
 </div>
 </details>
 
 <details>
-<summary><b>🔄 Bagaimana cara update ke versi terbaru?</b></summary>
+<summary><b>🔑 Mengapa saya memerlukan Kunci Aktivasi dan Kunci API Gemini?</b></summary>
 <div style="padding: 10px;">
-  Kunjungi halaman GitHub kami secara berkala untuk mendapatkan informasi pembaruan. Untuk update, cukup hapus ekstensi lama dan instal versi terbaru dengan mengikuti langkah instalasi di atas.
+
+  - <b>Kunci Aktivasi</b> diperlukan untuk verifikasi awal dan memastikan penggunaan ekstensi sesuai dengan ketentuan.
+  - <b>Kunci API Gemini</b> dari Google AI Studio diperlukan untuk mengaktifkan semua fitur berbasis AI. Kunci ini gratis untuk penggunaan standar. Tutorial untuk mendapatkannya tersedia di dalam ekstensi.
+    </div>
+    </details>
+
+<details>
+<summary><b>🔄 Bagaimana cara memperbarui ekstensi?</b></summary>
+<div style="padding: 10px;">
+Untuk memperbarui, hapus ekstensi versi lama dari halaman `chrome://extensions/`, lalu unduh dan instal versi terbaru dengan mengikuti langkah-langkah instalasi di atas. Pemberitahuan pembaruan juga akan muncul di dalam dasbor MENTARI MOD.
 </div>
 </details>
 
 <details>
-<summary><b>🔮 Fitur apa yang akan datang?</b></summary>
+<summary><b>🐞 Menemukan bug atau punya ide fitur baru?</b></summary>
 <div style="padding: 10px;">
-  <b>Punya ide untuk fitur baru?</b> Buka <a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/issues">issue baru</a> dan bagikan ide Anda!.
+Kami sangat menghargai kontribusi Anda! Silakan buat laporan bug atau ajukan permintaan fitur baru melalui halaman <a href="[https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/issues](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/issues)"><b>Issues</b></a> di GitHub.
 </div>
 </details>
+
+-----
 
 ## 📄 Lisensi
 
-Proyek ini dilisensikan di bawah [MIT License](LICENSE) - lihat file LICENSE untuk detail lebih lanjut.
+Proyek ini dilisensikan di bawah **MIT License**. Lihat file [LICENSE](https://www.google.com/search?q=LICENSE) untuk informasi lebih lanjut.
 
----
+-----
 
 <div align="center">
-  <p>Dibuat dengan ❤️ untuk mahasiswa UNPAM</p>
+<p>Dibuat dengan ❤️ untuk seluruh mahasiswa Universitas Pamulang</p>
 
-[![GitHub](https://img.shields.io/badge/Follow-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/lukman754)
-[![Instagram](https://img.shields.io/badge/Follow-Instagram-E4405F?style=for-the-badge&logo=instagram)](https://instagram.com/_.chopin)
-[![Support Me](https://img.shields.io/badge/Support_with_Coffee-FF813F?style=for-the-badge&logo=buymeacoffee&logoColor=white)](https://saweria.co/chopin)
+| **Pengembang Utama** | **Kontributor Backend & Logika** |
+| :---: | :---: |
+| **Lukman Muludin** | **Ananda Anugrah H** |
+| [](https://www.google.com/search?q=%5Bhttps://github.com/Lukman754%5D(https://github.com/Lukman754)) [](https://instagram.com/_.chopin) | [](https://github.com/AnandaAnugrahHandyanto) [](https://t.me/Vynix77) |
 
-  <p>© 2025 <a href="https://instagram.com/_.chopin">Lukman Muludin</a>. All Rights Reserved.</p>
+<p>© 2025 <a href="[https://instagram.com/_.chopin](https://instagram.com/_.chopin)">Lukman Muludin</a>. All Rights Reserved.</p>
 </div>
