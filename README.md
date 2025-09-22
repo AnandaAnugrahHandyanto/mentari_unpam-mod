@@ -8,7 +8,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/AnandaAnugrahHandyanto/mentari_unpam-mod?color=green&style=for-the-badge)](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/issues)
 [![GitHub stars](https://img.shields.io/github/stars/AnandaAnugrahHandyanto/mentari_unpam-mod?style=for-the-badge)](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/stargazers)
 [![GitHub license](https://img.shields.io/github/license/AnandaAnugrahHandyanto/mentari_unpam-mod?style=for-the-badge)](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/blob/main/LICENSE)
-[![Version](https://img.shields.io/badge/version-5.3-blue?style=for-the-badge)](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/blob/main/manifest.json)
+[![Version](https://img.shields.io/badge/version-5.4-blue?style=for-the-badge)](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/blob/main/manifest.json)
 
 </div>
 
@@ -51,7 +51,7 @@ Dengan antarmuka _glassmorphism_ yang elegan dan fungsionalitas yang kaya, MENTA
 
 ### 💻 Windows/macOS (Browser Berbasis Chromium)
 
-1.  **Unduh** file `MentariEnhancer_v5.3.zip` dari halaman [Releases](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest).
+1.  **Unduh** file `MentariEnhancer_v5.4.zip` dari halaman [Releases](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest).
 2.  **Ekstrak** file zip tersebut ke dalam sebuah folder.
 3.  Buka browser Anda (Chrome, Edge, Brave) dan navigasi ke `chrome://extensions/`.
 4.  Aktifkan **"Mode Pengembang"** (Developer Mode) yang biasanya terletak di pojok kanan atas.
