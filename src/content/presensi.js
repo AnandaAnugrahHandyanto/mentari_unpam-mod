@@ -94,7 +94,7 @@ function showAttendanceDetails(pertemuan, mataKuliah) {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,9 +104,13 @@ function showAttendanceDetails(pertemuan, mataKuliah) {
   // Create modal content
   const modalContent = document.createElement('div')
   modalContent.style.cssText = `
-    background-color: white;
+    background-color: rgba(25, 25, 30, 0.75); /* Dark transparent background */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f0f0f0; /* Light text color */
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     width: 90%;
     max-width: 1200px;
     max-height: 90vh;
@@ -124,18 +128,22 @@ function showAttendanceDetails(pertemuan, mataKuliah) {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    border-bottom: 1px solid #eaeaea;
-    color: black;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 16px;
     position: sticky;
-    top: 0;
+    top: -24px;
     z-index: 2;
-    background: white;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 24px;
+    background: inherit; /* Inherit glassmorphism effect */
   `
 
   header.innerHTML = `
-    <h3 style="margin: 0; font-size: 18px; font-weight: 600;">${mataKuliah} - Detail Presensi</h3>
-    <button id="close-detail-modal" style="background: none; border: none; cursor: pointer; color: #666; font-size: 20px;">×</button>
+    <h3 style="margin: 0; font-size: 18px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${mataKuliah} - Detail Presensi</h3>
+    <button id="close-detail-modal" style="background: none; border: none; cursor: pointer; color: #aaa; font-size: 24px;">×</button>
   `
 
   // Create table container (for horizontal scroll)
@@ -151,18 +159,18 @@ function showAttendanceDetails(pertemuan, mataKuliah) {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
-    color: black;
+    color: #f0f0f0;
   `
 
   table.innerHTML = `
     <thead>
-      <tr style="background-color: #fafafa;">
-        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eaeaea;">Pertemuan</th>
-        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eaeaea;">Jenis</th>
-        <th style="padding: 12px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eaeaea;">Status</th>
-        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eaeaea;">Tanggal Mulai</th>
-        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eaeaea;">Tanggal Hadir</th>
-        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eaeaea;">Oleh</th>
+      <tr style="background-color: rgba(255, 255, 255, 0.05);">
+        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Pertemuan</th>
+        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Jenis</th>
+        <th style="padding: 12px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Status</th>
+        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Tanggal Mulai</th>
+        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Tanggal Hadir</th>
+        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">Oleh</th>
       </tr>
     </thead>
     <tbody id="detail-table-body">
@@ -191,7 +199,7 @@ function showAttendanceDetails(pertemuan, mataKuliah) {
     row.style.cssText = `transition: background-color 0.15s ease;`
 
     row.onmouseover = function () {
-      this.style.backgroundColor = '#f9fafb'
+      this.style.backgroundColor = 'rgba(255, 255, 255, 0.08)'
     }
 
     row.onmouseout = function () {
@@ -201,11 +209,11 @@ function showAttendanceDetails(pertemuan, mataKuliah) {
     // Status styling
     let statusColor, statusBg
     if (p.presensi_status === 'hadir') {
-      statusColor = '#10b981' // green
-      statusBg = 'rgba(16, 185, 129, 0.1)'
+      statusColor = '#2ecc71' // bright green
+      statusBg = 'rgba(46, 204, 113, 0.15)'
     } else {
-      statusColor = '#f43f5e' // red
-      statusBg = 'rgba(244, 63, 94, 0.1)'
+      statusColor = '#e74c3c' // bright red
+      statusBg = 'rgba(231, 76, 60, 0.15)'
     }
 
     // Format date
@@ -213,20 +221,20 @@ function showAttendanceDetails(pertemuan, mataKuliah) {
     const TglMulai = p.tanggal_mulai ? formatDateStart(p.tanggal_mulai) : '-'
 
     row.innerHTML = `
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea;">${
+      <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">${
         index + 1
       }</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea;">${
+      <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">${
         p.jenis_perkuliahan || '-'
       }</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea; text-align: center;">
+      <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
         <div style="display: inline-flex; align-items: center; background-color: ${statusBg}; color: ${statusColor}; padding: 4px 10px; border-radius: 12px; font-weight: 500; font-size: 13px;">
           ${p.presensi_status || 'tidak hadir'}
         </div>
       </td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea;">${TglMulai}</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea;">${dateStr}</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea;">${
+      <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">${TglMulai}</td>
+      <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">${dateStr}</td>
+      <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">${
         p.presensi_by || '-'
       }</td>
     `
@@ -271,257 +279,278 @@ function formatDateStart(dateString) {
 // Modify the showPresensiTable function to make rows clickable
 function showPresensiTable(presensiData) {
   // Get student info
-  const mahasiswaInfo = presensiData.mahasiswa
+  const mahasiswaInfo = presensiData.mahasiswa;
 
   // Create popup container
-  const popupContainer = document.createElement('div')
-  popupContainer.id = 'presensi-popup'
+  const popupContainer = document.createElement('div');
+  popupContainer.id = 'presensi-popup';
   popupContainer.style.cssText = `
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+    background-color: rgba(18, 18, 22, 0.8);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e5e7eb;
     padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     z-index: 10000;
     width: 90%;
-    max-width: 1200px;
+    max-width: 1000px;
     max-height: 90vh;
     overflow-y: auto;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: black;
-  `
+  `;
 
-  // Create header with student info
-  const header = document.createElement('div')
-  header.style.cssText = `
-    margin-bottom: 24px;
-    border-bottom: 1px solid #eaeaea;
-    padding-bottom: 16px;
-  `
-
-  header.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
-      <h2 style="margin: 0; font-size: 24px; font-weight: 600; color: #000;">Ringkasan Presensi</h2>
-      <span style="background-color: #0070f3; color: white; padding: 6px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-top: 8px;">
-        ${presensiData.length} Mata Kuliah
-      </span>
-    </div>
-
-    <div style="display: flex; flex-wrap: wrap; gap: 16px;">
-      <div style="flex: 1; min-width: 200px;">
-        <div style="font-size: 12px; color: #666; margin-bottom: 4px;">Nama Mahasiswa</div>
-        <div style="font-weight: 500;">${mahasiswaInfo.nama_mahasiswa}</div>
-      </div>
-      <div style="flex: 1; min-width: 100px;">
-        <div style="font-size: 12px; color: #666; margin-bottom: 4px;">NIM</div>
-        <div style="font-weight: 500;">${mahasiswaInfo.nim}</div>
-      </div>
-      <div style="flex: 1; min-width: 200px;">
-        <div style="font-size: 12px; color: #666; margin-bottom: 4px;">Semester</div>
-        <div style="font-weight: 500;">${mahasiswaInfo.nama_semester_registrasi}</div>
-      </div>
-    </div>
-  `
-
-  // Create table container
-  const tableContainer = document.createElement('div')
-  tableContainer.style.cssText = `
-    border-radius: 8px;
-    overflow-x: auto;
-    border: 1px solid #eaeaea;
-  `
-
-  // Create table
-  const table = document.createElement('table')
-  table.style.cssText = `
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    background-color: #fff;
-    min-width: 650px;
-  `
-
-  // Table header
-  table.innerHTML = `
-    <thead>
-      <tr style="background-color: #fafafa;">
-        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eaeaea;">No</th>
-        <th style="padding: 12px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eaeaea;">Mata Kuliah</th>
-        <th style="padding: 12px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eaeaea;">Kode</th>
-        <th style="padding: 12px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eaeaea;">SKS</th>
-        <th style="padding: 12px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eaeaea;">Total Pertemuan</th>
-        <th style="padding: 12px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eaeaea;">Hadir</th>
-        <th style="padding: 12px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eaeaea;">Tidak Hadir</th>
-        <th style="padding: 12px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eaeaea;">Persentase</th>
-      </tr>
-    </thead>
-    <tbody id="presensi-table-body">
-    </tbody>
-  `
-
-  // Footer with close button
-  const footer = document.createElement('div')
-  footer.style.cssText = `
-    margin-top: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  `
-
-  // Add overall attendance status
-  const overallStatus = document.createElement('div')
-
-  // Calculate overall attendance
-  let totalPertemuanKeseluruhan = 0
-  let totalHadirKeseluruhan = 0
+  let totalSKS = 0;
+  let totalPertemuanKeseluruhan = 0;
+  let totalHadirKeseluruhan = 0;
+  let criticalCoursesCount = 0;
 
   presensiData.forEach((data) => {
-    const hadir = data.pertemuan.filter(
-      (p) => p.presensi_status === 'hadir'
-    ).length
-    const totalPertemuan = data.pertemuan.length
+    totalSKS += parseInt(data.sks || 0);
+    const hadir = data.pertemuan.filter(p => p.presensi_status === 'hadir').length;
+    const totalPertemuan = data.pertemuan.length;
+    totalHadirKeseluruhan += hadir;
+    totalPertemuanKeseluruhan += totalPertemuan;
+    const persentase = totalPertemuan > 0 ? (hadir / totalPertemuan) * 100 : 0;
+    if (persentase < 75) {
+      criticalCoursesCount++;
+    }
+  });
 
-    totalPertemuanKeseluruhan += totalPertemuan
-    totalHadirKeseluruhan += hadir
-  })
-
-  const persentaseKeseluruhan =
-    totalPertemuanKeseluruhan > 0
-      ? ((totalHadirKeseluruhan / totalPertemuanKeseluruhan) * 100).toFixed(1)
-      : 0
-
-  const statusColor = persentaseKeseluruhan >= 75 ? '#0070f3' : '#f5a623'
-  const statusBackground =
-    persentaseKeseluruhan >= 75
-      ? 'rgba(0, 112, 243, 0.1)'
-      : 'rgba(245, 166, 35, 0.1)'
-
-  overallStatus.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-      <div style="font-size: 14px; color: #666;">Status Kehadiran:</div>
-      <div style="background-color: ${statusBackground}; color: ${statusColor}; padding: 4px 12px; border-radius: 16px; font-weight: 500;">
-        ${persentaseKeseluruhan}% Keseluruhan
+  const avgAttendance = totalPertemuanKeseluruhan > 0 ? (totalHadirKeseluruhan / totalPertemuanKeseluruhan * 100).toFixed(1) : 0;
+  const header = document.createElement('div');
+  header.style.cssText = `margin-bottom: 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 16px;`;
+  header.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+      <div>
+        <h2 style="margin: 0; font-size: 24px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Ringkasan Presensi</h2>
+        <p style="margin: 4px 0 0; color: #9ca3af; font-size: 14px;">${mahasiswaInfo.nama_mahasiswa} (${mahasiswaInfo.nim})</p>
+      </div>
+      <button id="export-presensi-btn" style="background-color: rgba(255, 255, 255, 0.1); color: #e5e7eb; border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s ease;">Cetak PDF</button>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
+      <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+        <div style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Rata-rata Kehadiran</div>
+        <div style="font-weight: 600; font-size: 20px; color: ${avgAttendance >= 75 ? '#2ecc71' : '#f39c12'};">${avgAttendance}%</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+        <div style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Total SKS</div>
+        <div style="font-weight: 600; font-size: 20px;">${totalSKS}</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+        <div style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Matkul Kritis</div>
+        <div style="font-weight: 600; font-size: 20px; color: ${criticalCoursesCount > 0 ? '#e74c3c' : '#2ecc71'};">${criticalCoursesCount}</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+        <div style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Semester</div>
+        <div style="font-weight: 600; font-size: 20px;">${mahasiswaInfo.nama_semester_registrasi}</div>
       </div>
     </div>
-  `
+  `;
 
-  // Close button
-  const closeButton = document.createElement('button')
-  closeButton.textContent = 'Tutup'
+  const cardContainer = document.createElement('div');
+  cardContainer.id = 'presensi-card-container';
+  cardContainer.style.cssText = `
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  `;
+
+  presensiData.forEach((data, index) => {
+    const hadir = data.pertemuan.filter(p => p.presensi_status === 'hadir').length;
+    const totalPertemuan = data.pertemuan.length;
+    const persentase = totalPertemuan > 0 ? ((hadir / totalPertemuan) * 100) : 0;
+
+    let statusBarColor, statusText;
+    if (persentase >= 85) {
+      statusBarColor = '#2ecc71';
+      statusText = 'Aman';
+    } else if (persentase >= 75) {
+      statusBarColor = '#3498db';
+      statusText = 'Cukup';
+    } else {
+      statusBarColor = '#e74c3c';
+      statusText = 'Kritis';
+    }
+    
+    const card = document.createElement('div');
+    card.style.cssText = `
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    `;
+    card.onmouseover = () => { card.style.borderColor = 'rgba(255, 255, 255, 0.3)'; card.style.transform = 'translateY(-3px)'; };
+    card.onmouseout = () => { card.style.borderColor = 'rgba(255, 255, 255, 0.1)'; card.style.transform = 'none'; };
+    card.onclick = () => showAttendanceDetails(data.pertemuan, data.nama_mata_kuliah);
+
+    card.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+        <h3 style="font-size: 15px; font-weight: 600; margin: 0; line-height: 1.3; flex: 1 1 0%; min-width: 150px;">${data.nama_mata_kuliah}</h3>
+        <span style="background-color: ${statusBarColor}; color: white; padding: 4px 8px; font-size: 11px; font-weight: 500; border-radius: 6px; flex-shrink: 0;">${statusText}</span>
+      </div>
+      <div style="font-size: 12px; color: #9ca3af; margin-bottom: auto; padding-bottom: 12px;">${data.id_mata_kuliah} • ${data.sks || '3'} SKS</div>
+      
+      <div style="width: 100%; background-color: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
+        <div style="width: ${persentase.toFixed(1)}%; background-color: ${statusBarColor}; height: 8px; border-radius: 4px; transition: width 0.5s ease;"></div>
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color: #bdc3c7;">
+        <span>Hadir: <strong>${hadir} / ${totalPertemuan}</strong></span>
+        <span><strong>${persentase.toFixed(1)}%</strong></span>
+      </div>
+    `;
+    cardContainer.appendChild(card);
+  });
+
+  const footer = document.createElement('div');
+  footer.style.cssText = `margin-top: 24px; display: flex; justify-content: flex-end;`;
+  const closeButton = document.createElement('button');
+  closeButton.textContent = 'Tutup';
   closeButton.style.cssText = `
     padding: 8px 16px;
     background-color: #0070f3;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.2s ease;
-    margin-left: auto;
-  `
-  closeButton.onmouseover = function () {
-    this.style.backgroundColor = '#0060df'
-  }
-  closeButton.onmouseout = function () {
-    this.style.backgroundColor = '#0070f3'
-  }
-  closeButton.onclick = function () {
-    document.body.removeChild(popupContainer)
-  }
+  `;
+  closeButton.onclick = () => document.body.removeChild(popupContainer);
+  footer.appendChild(closeButton);
 
-  footer.appendChild(overallStatus)
-  footer.appendChild(closeButton)
+  popupContainer.appendChild(header);
+  popupContainer.appendChild(cardContainer);
+  popupContainer.appendChild(footer);
+  document.body.appendChild(popupContainer);
 
-  // Assemble all elements
-  tableContainer.appendChild(table)
-  popupContainer.appendChild(header)
-  popupContainer.appendChild(tableContainer)
-  popupContainer.appendChild(footer)
-
-  // Add to body
-  document.body.appendChild(popupContainer)
-
-  // Fill table with data
-  const tableBody = document.getElementById('presensi-table-body')
-
-  presensiData.forEach((data, index) => {
-    const hadir = data.pertemuan.filter(
-      (p) => p.presensi_status === 'hadir'
-    ).length
-    const totalPertemuan = data.pertemuan.length
-    const persentase =
-      totalPertemuan > 0 ? ((hadir / totalPertemuan) * 100).toFixed(1) : 0
-
-    // Determine percentage color
-    let statusColor, statusBg
-    if (persentase >= 85) {
-      statusColor = '#10b981' // green
-      statusBg = 'rgba(16, 185, 129, 0.1)'
-    } else if (persentase >= 75) {
-      statusColor = '#0070f3' // blue
-      statusBg = 'rgba(0, 112, 243, 0.1)'
-    } else if (persentase >= 50) {
-      statusColor = '#f5a623' // orange
-      statusBg = 'rgba(245, 166, 35, 0.1)'
-    } else {
-      statusColor = '#f43f5e' // red
-      statusBg = 'rgba(244, 63, 94, 0.1)'
-    }
-
-    const row = document.createElement('tr')
-    row.style.cssText = `
-      transition: background-color 0.15s ease;
-      cursor: pointer;
-    `
-
-    row.onmouseover = function () {
-      this.style.backgroundColor = '#f9fafb'
-    }
-    row.onmouseout = function () {
-      this.style.backgroundColor = ''
-    }
-
-    // Add click event to show detailed attendance
-    row.onclick = function () {
-      showAttendanceDetails(data.pertemuan, data.nama_mata_kuliah)
-    }
-
-    // Add SKS (if missing, use default)
-    const sks = data.sks || '3'
-
-    row.innerHTML = `
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea;">${
-        index + 1
-      }</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea; font-weight: 500;">${
-        data.nama_mata_kuliah
-      }</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea; text-align: center;">${
-        data.id_mata_kuliah
-      }</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea; text-align: center; font-weight: bold;">${sks}</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea; text-align: center;">${totalPertemuan}</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea; text-align: center; color: #10b981;">${hadir}</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea; text-align: center; color: #f43f5e;">${
-        totalPertemuan - hadir
-      }</td>
-      <td style="padding: 12px 16px; border-bottom: 1px solid #eaeaea; text-align: center;">
-        <div style="display: inline-flex; align-items: center; gap: 6px; background-color: ${statusBg}; color: ${statusColor}; padding: 4px 10px; border-radius: 12px; font-weight: 500; font-size: 13px;">
-          ${persentase}%
-        </div>
-      </td>
-    `
-
-    tableBody.appendChild(row)
-  })
+  // Add export functionality
+  document.getElementById('export-presensi-btn').onclick = () => {
+    printRecap(presensiData, mahasiswaInfo);
+  };
 }
 
-// Rest of the original script remains the same
+
+// buat rekap HTML dan mencetaknya ke PDF
+function printRecap(presensiData, mahasiswaInfo) {
+  const today = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+  
+  let tableRows = '';
+  presensiData.forEach((data, index) => {
+    const hadir = data.pertemuan.filter(p => p.presensi_status === 'hadir').length;
+    const total = data.pertemuan.length;
+    const persentase = total > 0 ? ((hadir / total) * 100).toFixed(1) + '%' : 'N/A';
+    tableRows += `
+      <tr>
+        <td style="text-align: center;">${index + 1}</td>
+        <td>${data.nama_mata_kuliah}</td>
+        <td style="text-align: center;">${data.id_mata_kuliah}</td>
+        <td style="text-align: center;">${data.sks || '3'}</td>
+        <td style="text-align: center;">${hadir}</td>
+        <td style="text-align: center;">${total}</td>
+        <td style="text-align: center;">${persentase}</td>
+      </tr>
+    `;
+  });
+
+  const printHtml = `
+    <html>
+      <head>
+        <title>Rekap Presensi - ${mahasiswaInfo.nim}</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
+          body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; color: #000; margin: 2.5cm 2.5cm 2.5cm 3cm; }
+          .header { display: flex; align-items: center; }
+          .header img { width: 85px; height: auto; }
+          .header-text { margin-left: 20px; text-align: left;}
+          .header-text h1 { font-size: 16pt; margin: 0; font-weight: bold; }
+          .header-text h2 { font-size: 14pt; margin: 0; font-weight: bold; }
+          hr.main-line { border: none; border-top: 1.5px solid #000; margin: 5px 0 15px 0; }
+          .info-table { font-size: 11pt; border-collapse: collapse; }
+          .info-table td { padding: 2px 0; vertical-align: top; }
+          .info-table td:nth-child(1) { width: 140px; }
+          .info-table td:nth-child(2) { width: 15px; text-align: center; }
+          table.data { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 10pt; }
+          table.data th, table.data td { border: 1px solid #000; padding: 6px; text-align: left; }
+          table.data th { background-color: #e0e0e0; font-weight: bold; text-align: center;}
+          .signature { margin-top: 40px; float: right; text-align: center; width: 280px; }
+          .signature p { margin: 0; }
+          .signature .name { margin-top: 60px; font-weight: bold; text-decoration: underline; }
+          @page { size: A4; margin: 0; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <img src="https://unpam.ac.id/_nuxt/logo-unpam-300x291.DBvGUDu1.png" alt="Logo UNPAM">
+          <div class="header-text">
+            <h1>UNIVERSITAS PAMULANG</h1>
+            <h2>REKAP PRESENSI SEMESTER ${mahasiswaInfo.nama_semester_registrasi.toUpperCase()}</h2>
+          </div>
+        </div>
+        <hr class="main-line">
+        <table class="info-table">
+          <tr>
+            <td>FAKULTAS / PRODI</td>
+            <td>:</td>
+            <td>ILMU KOMPUTER / TEKNIK INFORMATIKA S1</td>
+          </tr>
+          <tr>
+            <td>NAMA MAHASISWA</td>
+            <td>:</td>
+            <td>${mahasiswaInfo.nama_mahasiswa}</td>
+          </tr>
+          <tr>
+            <td>NIM</td>
+            <td>:</td>
+            <td>${mahasiswaInfo.nim}</td>
+          </tr>
+        </table>
+        <table class="data">
+          <thead>
+            <tr>
+              <th>NO</th>
+              <th>NAMA MATA KULIAH</th>
+              <th>KODE MK</th>
+              <th>SKS</th>
+              <th>HADIR</th>
+              <th>TOTAL</th>
+              <th>PERSENTASE</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>
+        <div class="signature">
+          <p>Tangerang Selatan, ${today}</p>
+          <p>Ketua Program Studi</p>
+          <p class="name">Dr. Eng. Ahmad Musyafa, S.Kom., M.Kom</p>
+          <p>NIDN. 0425018609</p>
+        </div>
+      </body>
+    </html>
+  `;
+  
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(printHtml);
+  printWindow.document.close();
+  printWindow.focus();
+  setTimeout(() => { // Timeout is needed for some browsers
+    printWindow.print();
+    printWindow.close();
+  }, 250);
+}
 
 // Fungsi untuk menampilkan loading spinner
 function showLoadingSpinner() {
@@ -533,7 +562,9 @@ function showLoadingSpinner() {
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -544,7 +575,7 @@ function showLoadingSpinner() {
   spinner.style.cssText = `
       width: 50px;
       height: 50px;
-      border: 5px solid #f3f3f3;
+      border: 5px solid rgba(255, 255, 255, 0.2);
       border-top: 5px solid #0070f3;
       border-radius: 50%;
       animation: spin 1s linear infinite;
@@ -555,11 +586,11 @@ function showLoadingSpinner() {
   messageContainer.style.cssText = `
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       font-size: 16px;
-      color: #333;
+      color: #f0f0f0;
     `
   messageContainer.innerHTML = `
-      <div style="font-weight: 500; margin-bottom: 5px;">Memuat Data Presensi</div>
-      <div style="font-size: 14px; color: #666;">Mohon tunggu sebentar...</div>
+      <div style="font-weight: 500; margin-bottom: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Memuat Data Presensi</div>
+      <div style="font-size: 14px; color: #aaa;">Mohon tunggu sebentar...</div>
     `
 
   const loadingContent = document.createElement('div')
@@ -567,9 +598,9 @@ function showLoadingSpinner() {
       display: flex;
       align-items: center;
       padding: 20px;
-      background-color: white;
+      background-color: rgba(25, 25, 30, 0.8);
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     `
 
   loadingContent.appendChild(spinner)
@@ -636,7 +667,7 @@ function addFloatingButton() {
       font-weight: 500;
       font-size: 14px;
       transition: background 0.2s;
-      box-shadow: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     `
     button.onmouseover = function () {
       this.style.backgroundColor = '#0059b2'
@@ -677,8 +708,9 @@ function showPopupMessage(message, type = 'info') {
     font-size: 14px;
     z-index: 10000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    background-color: ${type === 'error' ? '#f44336' : '#4CAF50'};
+    background-color: ${type === 'error' ? '#e74c3c' : '#2ecc71'};
     color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   `
 
   popup.textContent = message
