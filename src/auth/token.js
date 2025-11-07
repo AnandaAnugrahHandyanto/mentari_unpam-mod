@@ -1761,7 +1761,7 @@ async function updateForumUI(courseDataList) {
     if (!forumList) return;
 
     const updateStatus = await checkForNotificationUpdate();
-    const localVersion = typeof window.mentariModVersion !== 'undefined' ? window.mentariModVersion : '6.1';
+    const localVersion = typeof window.mentariModVersion !== 'undefined' ? window.mentariModVersion : '6.2';
     const latestVersion = updateStatus ? updateStatus.updateAvailable : null;
 
     let html = '';
@@ -1778,11 +1778,11 @@ async function updateForumUI(courseDataList) {
       ${
         latestVersion && latestVersion !== localVersion
           ? `<a href="https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest" target="_blank" class="status-badge update-available">
-               🎉 Update v${latestVersion}
-             </a>`
+              🎉 Update v${latestVersion}
+            </a>`
           : `<div class="status-badge latest">
-               ✅ Terkini
-             </div>`
+              ✅ Terkini
+            </div>`
       }
     </div>
     `;
@@ -2245,7 +2245,7 @@ async function updateForumUI(courseDataList) {
         <div id="group-results-container" class="results-hidden"></div>
 
         <div class="student-list-card animated-card">
-           <div class="card-header-title">
+          <div class="card-header-title">
             <i class="fas fa-list-ul card-icon"></i>
             <h3>Daftar Semua Mahasiswa</h3>
           </div>

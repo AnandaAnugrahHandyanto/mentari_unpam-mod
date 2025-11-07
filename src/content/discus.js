@@ -1,13 +1,4 @@
-// ==UserScript==
-// @name         Diskusi Cari Jawaban Gemini
-// @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  Tambah tombol Cari Jawaban di diskusi forum, gunakan Gemini AI
-// @author       AI
-// ==/UserScript==
-
 ;(function () {
-  // Ambil API Key Gemini dari localStorage (seperti quiz.js)
   function getGeminiApiKey() {
     const storedApiKey = localStorage.getItem('geminiApiKey')
     if (storedApiKey) return atob(storedApiKey)
@@ -15,7 +6,6 @@
     throw new Error('Gemini API Key not found in localStorage')
   }
 
-  // Fungsi untuk kirim prompt ke Gemini
   async function askGeminiWithContent(
     content,
     mode = 'default',
@@ -23,7 +13,6 @@
   ) {
     const GEMINI_API_KEY = getGeminiApiKey()
     let prompt = ''
-    // Deteksi apakah ada beberapa pertanyaan bernomor
     const hasNumberedQuestions = /\b1\.[\s\S]*2\./.test(content)
     if (mode === 'default') {
       prompt =
@@ -67,17 +56,14 @@
     )
   }
 
-  // Fungsi untuk menambahkan tombol "Cari Jawaban" dan "Buat Pertanyaan" khusus dosen
   function addCariJawabanButtons() {
     document
       .querySelectorAll(
         '.MuiStack-root .MuiButton-root.MuiButton-containedSuccess'
       )
       .forEach((replyBtn) => {
-        // Cek apakah sudah ada tombol "Cari Jawaban"
         if (replyBtn.parentElement.querySelector('.cari-jawaban-btn')) return
 
-        // Deteksi apakah ini diskusi dosen (cek nama dosen di parent)
         const rootPaper = replyBtn.closest('.MuiPaper-root')
         const isDosen =
           rootPaper &&
@@ -92,7 +78,6 @@
               /\b(?:S\.Kom|M\.Kom|Dr|Prof|S\.Pd|M\.Pd|Dosen)\b/i
             )
 
-        // --- TOMBOL BUAT PERTANYAAN (KHUSUS DOSEN) ---
         let buatBtn = null
         if (isDosen) {
           buatBtn = document.createElement('button')
@@ -106,9 +91,7 @@
             <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M12 8v4\"></path><path d=\"M12 16h.01\"></path></svg>
           </span>
           <span class=\"MuiButton-label\">Buat Pertanyaan</span>`
-          // Insert sebelum tombol Cari Jawaban/Reply
           replyBtn.parentElement.insertBefore(buatBtn, replyBtn)
-          // Event klik
           buatBtn.addEventListener('click', async () => {
             buatBtn.disabled = true
             buatBtn.innerHTML = `<span class=\"MuiButton-startIcon\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M12 8v4\"></path><path d=\"M12 16h.01\"></path></svg></span><span class=\"MuiButton-label\">Memproses...</span>`
@@ -144,9 +127,7 @@
               let saran =
                 data?.candidates?.[0]?.content?.parts?.[0]?.text ||
                 'Tidak ada saran pertanyaan.'
-              // Pisahkan saran per baris
               let saranArr = saran.split(/\n+/).filter(Boolean)
-              // Tampilkan hasil di bawah tombol
               let saranDiv = rootPaper.querySelector('.saran-pertanyaan-gemini')
               if (!saranDiv) {
                 saranDiv = document.createElement('div')
@@ -160,12 +141,10 @@
                 const qWrap = document.createElement('div')
                 qWrap.style =
                   'display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;'
-                // Textbox sebagai card
                 const textBox = document.createElement('div')
                 textBox.textContent = q.trim()
                 textBox.style =
                   'flex:1 1 200px;padding:14px 54px 14px 12px;position:relative;border-radius:18px;background:#fff9d8;color:#333;font-size:13px;word-break:break-word;min-height:36px;'
-                // Tombol copy di dalam textbox
                 const copyBtn = document.createElement('button')
                 copyBtn.type = 'button'
                 copyBtn.className =
@@ -174,7 +153,7 @@
                   'position:absolute;right:8px;bottom:8px;min-width:0px;padding:4px 8px;line-height:1.2;font-weight:500;border-radius:9px;background:rgb(255, 179, 0);color:#1e1e1e;border:0;display:flex;align-items:center;gap:4px;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,0.07);'
                 copyBtn.innerHTML = `<span class=\"MuiButton-startIcon\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\" ry=\"2\"></rect><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"></path></svg></span><span class=\"MuiButton-label\">Copy</span>`
                 copyBtn.onclick = () => {
-                  navigator.clipboard.writeText(textBox.textContent)
+                  navigator.clipboard.writeText(q.trim()) 
                   copyBtn.innerHTML = `<span class=\"MuiButton-startIcon\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\" ry=\"2\"></rect><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"></path></svg></span><span class=\"MuiButton-label\">Copied!</span>`
                   setTimeout(
                     () =>
@@ -194,8 +173,6 @@
           })
         }
 
-        // --- TOMBOL CARI JAWABAN (SEMUA) ---
-        // Buat tombol baru
         const cariBtn = document.createElement('button')
         cariBtn.type = 'button'
         cariBtn.className =
@@ -208,10 +185,8 @@
         </span>
         <span class=\"MuiButton-label\">Cari Jawaban</span>`
 
-        // Insert sebelum tombol Reply
         replyBtn.parentElement.insertBefore(cariBtn, replyBtn)
 
-        // Event klik
         cariBtn.addEventListener('click', async (e) => {
           cariBtn.disabled = true
           cariBtn.innerHTML = `<span class=\"MuiButton-startIcon\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"></circle><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"></line></svg></span><span class=\"MuiButton-label\">Mencari...</span>`
@@ -219,18 +194,10 @@
           if (!rootPaper) return
           const ckContents = rootPaper.querySelectorAll('.ck-content')
           let content = ''
-          if (isDosen) {
-            // Jika dosen, gunakan ck-content ke-2 jika ada, jika tidak ada pakai ke-1
-            content =
-              (ckContents[1] && getCkContentWithListNumbering(ckContents[1])) ||
-              (ckContents[0] && getCkContentWithListNumbering(ckContents[0])) ||
-              ''
-          } else {
-            // Mahasiswa: tetap ck-content ke-2
-            content =
-              (ckContents[1] && getCkContentWithListNumbering(ckContents[1])) ||
-              ''
-          }
+          content =
+            (ckContents[1] && getCkContentWithListNumbering(ckContents[1])) ||
+            (ckContents[0] && getCkContentWithListNumbering(ckContents[0])) ||
+            ''
           if (!content) {
             alert('Konten diskusi tidak ditemukan!')
             cariBtn.disabled = false
@@ -249,22 +216,16 @@
       })
   }
 
-  // Post-processing untuk jawaban Gemini jika ada beberapa pertanyaan bernomor
   function formatNumberedAnswers(content, jawaban) {
-    // Deteksi jumlah soal bernomor
     const matches = [...content.matchAll(/\b(\d+)\./g)]
-    if (matches.length < 2) return jawaban // Tidak perlu format jika hanya 1 soal
+    if (matches.length < 2) return jawaban
     const total = matches.length
-    // Bagi jawaban menjadi beberapa bagian (paragraf)
     let parts = jawaban.split(/\n{2,}|\r{2,}|\n\r|\r\n/).filter(Boolean)
-    // Jika Gemini sudah memberi penomoran, biarkan
     let alreadyNumbered = parts.every((p, i) => p.trim().startsWith(i + 1 + ''))
     if (alreadyNumbered) return jawaban
-    // Jika bagian kurang dari jumlah soal, split per baris
     if (parts.length < total) {
       parts = jawaban.split(/\n|\r/).filter(Boolean)
     }
-    // Jika masih kurang, bagi rata string
     if (parts.length < total) {
       const avgLen = Math.floor(jawaban.length / total)
       parts = []
@@ -272,7 +233,6 @@
         parts.push(jawaban.slice(i * avgLen, (i + 1) * avgLen))
       }
     }
-    // Format dengan nomor
     const formatted = parts
       .slice(0, total)
       .map((p, i) => `${i + 1}. ${p.trim()}`)
@@ -280,7 +240,6 @@
     return formatted
   }
 
-  // Fungsi untuk menampilkan hasil jawaban Gemini, tombol copy, dan revisi
   function showJawabanBox(jawaban, replyBtn, rootPaper, originalContent) {
     let resultDiv = rootPaper.querySelector('.jawaban-gemini')
     if (!resultDiv) {
@@ -290,19 +249,14 @@
         'margin:10px 0 0 0;padding:10px;background:#fffbe7;color:#333;border-radius:18px;border:1px solid #ffe082;font-size:13px;display:flex;flex-direction:column;gap:8px;'
       replyBtn.parentElement.parentElement.appendChild(resultDiv)
     }
-    // Jika ada beberapa soal bernomor, format jawaban
     let formattedJawaban = jawaban
     if (originalContent && /\b1\.[\s\S]*2\./.test(originalContent)) {
       formattedJawaban = formatNumberedAnswers(originalContent, jawaban)
     }
-    resultDiv.innerHTML = `<b>Jawaban:</b><div style='margin-bottom:6px;white-space:pre-line;'>${formattedJawaban.replace(
-      /\n/g,
-      '<br>'
-    )}</div>`
-    // Tombol copy dan revisi
+    resultDiv.innerHTML = `<b>Jawaban:</b><div style='margin-bottom:6px;white-space:pre-line;'>${formattedJawaban}</div>`
     const btnRow = document.createElement('div')
     btnRow.style = 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;'
-    // Tombol Copy
+
     const copyBtn = document.createElement('button')
     copyBtn.type = 'button'
     copyBtn.className =
@@ -324,7 +278,6 @@
       )
     }
     btnRow.appendChild(copyBtn)
-    // Tombol revisi
     const revisiList = [
       { mode: 'shorten', label: 'Ringkas' },
       { mode: 'clarify', label: 'Perjelas' },
@@ -378,14 +331,12 @@
             }
           }
         } else if (node.tagName === 'LI') {
-          // If <li> contains nested <ol>/<ul>
           let text = ''
           for (const child of node.childNodes) {
             text += traverse(child, olLevel)
           }
           result += text
         } else {
-          // Other elements: recurse
           for (const child of node.childNodes) {
             result += traverse(child, olLevel)
           }
@@ -398,12 +349,59 @@
     return traverse(ckContentElem).trim()
   }
 
-  // Jalankan sekali di awal
-  addCariJawabanButtons()
+  let lastUrl = window.location.href;
+  let targetElementInterval = null;
+  function waitForTargetElement(callback, selector, timeout = 10000, interval = 250) {
+      if (targetElementInterval) clearInterval(targetElementInterval);
 
-  // Observer untuk handle diskusi yang dimuat dinamis
+      let startTime = Date.now();
+      
+      targetElementInterval = setInterval(() => {
+          const target = document.querySelector(selector);
+          
+          if (target) {
+              clearInterval(targetElementInterval);
+              callback();
+          } else if (Date.now() - startTime >= timeout) {
+              clearInterval(targetElementInterval);
+              console.warn('Tombol Reply tidak ditemukan dalam batas waktu.');
+          }
+      }, interval);
+  }
+
+
+  function handleForumMutations() {
+      if (!window.location.href.includes('/forum/')) return;
+      addCariJawabanButtons();
+  }
+
+  handleForumMutations() 
+
   const observer = new MutationObserver(() => {
-    addCariJawabanButtons()
+    handleForumMutations();
   })
+  
   observer.observe(document.body, { childList: true, subtree: true })
+  setInterval(() => {
+      const currentUrl = window.location.href;
+
+      if (currentUrl !== lastUrl) {
+          lastUrl = currentUrl;
+          
+          if (currentUrl.includes('/forum/')) {
+              console.log('Navigasi ke Forum Terdeteksi. Menunggu elemen target...');
+              
+              observer.disconnect();
+              
+              waitForTargetElement(() => {
+                  handleForumMutations();
+                  
+                  observer.observe(document.body, { childList: true, subtree: true });
+              }, '.MuiButton-containedSuccess');
+              
+          } else {
+              observer.observe(document.body, { childList: true, subtree: true });
+          }
+      }
+  }, 300); 
 })()

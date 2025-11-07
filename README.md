@@ -77,7 +77,7 @@ MENTARI MOD hadir dengan berbagai fitur yang dirancang untuk membantu mahasiswa.
 
 > Langkah-langkah ini berlaku untuk Google Chrome, Microsoft Edge, Brave, dll.
 
-1.  Unduh file **`MentariEnhancer_v6.1.zip`** dari [halaman rilis terbaru](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest).
+1.  Unduh file **`MentariEnhancer_v6.2.zip`** dari [halaman rilis terbaru](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest).
 2.  Ekstrak file `.zip` tersebut ke sebuah folder.
 3.  Buka browser Anda dan navigasi ke `chrome://extensions/`.
 4.  Aktifkan **"Mode Pengembang"** (Developer Mode) di pojok kanan atas.
@@ -87,7 +87,7 @@ MENTARI MOD hadir dengan berbagai fitur yang dirancang untuk membantu mahasiswa.
 ### **📱 Android & iOS (Mises Browser)**
 
 1.  Unduh **Mises Browser** dari App Store atau Play Store.
-2.  Buka Mises Browser, unduh file **`MentariEnhancer_v6.1.zip`**.
+2.  Buka Mises Browser, unduh file **`MentariEnhancer_v6.2.zip`**.
 3.  Ketuk menu (tiga titik) dan pilih **"Extensions"**.
 4.  Aktifkan **"Developer Mode"**.
 5.  Klik **"+ (from .zip/.crx/.user.js)"** dan pilih file `.zip` yang sudah diunduh.
