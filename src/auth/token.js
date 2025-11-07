@@ -348,7 +348,7 @@ console.log('Token.js sedang dijalankan!');
           <div id="forum-list"></div>
         </div>
         <div class="token-tab-content" id="notifications-tab">
-          <div class="token-info-section"><p>Balasan Dosen Terbaru</p></div>
+          <div class="token-info-section"><p>Balasan Forum Diskusi Terbaru</p></div>
           <div id="notifications-list"></div>
         </div>
         <div class="token-tab-content" id="student-data-tab"></div>
@@ -1522,7 +1522,7 @@ function extractCourseCodeFromUrl(url) {
               <div class="developer">
                   <div class="dev-info">
                       <h4>Lukman Muludin</h4>
-                      <span>Lead Dev</span>
+                      <span>Lead Developer</span>
                   </div>
                   <div class="dev-links">
                       <a href="https://instagram.com/_.chopin" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -1533,7 +1533,7 @@ function extractCourseCodeFromUrl(url) {
               <div class="developer">
                   <div class="dev-info">
                       <h4>Ananda Anugrah H</h4>
-                      <span>Backend & Logic Dev</span>
+                      <span>Core Developer</span>
                   </div>
                   <div class="dev-links">
                       <a href="https://instagram.com/nando_fiingerstyle" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -1609,7 +1609,7 @@ function extractCourseCodeFromUrl(url) {
     });
   }
 
-  function updateNotificationsUI() {
+function updateNotificationsUI() {
     const notificationsTab = document.getElementById("notifications-tab");
     if (!notificationsTab) return;
 
@@ -1628,8 +1628,8 @@ function extractCourseCodeFromUrl(url) {
       notificationsList.innerHTML = `
         <div class="notification-item no-notifications">
           <div class="notification-content">
-            <p>Belum ada balasan dosen</p>
-            <small>Ketika dosen membalas postingan Anda, notifikasi akan muncul di sini</small>
+            <p>Belum ada balasan</p>
+            <small>Ketika dosen atau mahasiswa lain membalas postingan Anda, notifikasi akan muncul di sini</small>
           </div>
         </div>
       `;
@@ -1656,20 +1656,22 @@ function extractCourseCodeFromUrl(url) {
         "unknown-forum";
       const topicId =
         notification.topicId || notification.id || "unknown-topic";
-      const topicUrl = `https://mentari.unpam.ac.id/u-courses/${courseCode}/forum/${forumId}/topics/${topicId}`;
-      
+      const topicUrl = `https://mentari.unpam.ac.id/u-courses/${courseCode}/forum/${forumId}/topics/${topicId}#${notification.id}`;
       const notificationId = `notification-${notification.id}`;
-      
+      const isLecturer = notification.isLecturer;
+      const replierIcon = isLecturer ? 'fa-user-graduate' : 'fa-user';
+      const replierName = notification.lecturerName;
+
       html += `
       <div class="notification-item clickable" id="${notificationId}" style="cursor: pointer; position: relative;">
-        <a href="${topicUrl}" class="notification-link" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; text-decoration: none;"></a>
+        <a href="${topicUrl}" class="notification-link" data-reply-id="${notification.id}" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; text-decoration: none;"></a>
         <div style="position: relative; z-index: 2; pointer-events: none;">
           <div class="notification-header">
             <div class="notification-icon">
-              <i class="fas fa-user-graduate"></i>
+              <i class="fas ${replierIcon}"></i>
             </div>
             <div class="notification-meta">
-              <div class="notification-lecturer">${notification.lecturerName}</div>
+              <div class="notification-lecturer">${replierName}</div>
               <div class="notification-time">${createdDate}</div>
             </div>
           </div>
@@ -1686,47 +1688,55 @@ function extractCourseCodeFromUrl(url) {
       .querySelectorAll(".notification-item.clickable")
       .forEach((item) => {
         item.addEventListener("click", function (e) {
-          if (e.target.closest("a.notification-link")) {
+          const link = e.target.closest("a.notification-link");
+          if (link) {
             e.preventDefault();
-            const href = e.target
-              .closest("a.notification-link")
-              .getAttribute("href");
-
-            const notificationId = item.id.replace("notification-", "");
-            sessionStorage.setItem("scrollToNotificationId", notificationId);
-
+            const href = link.getAttribute("href");
+            const replyId = link.dataset.replyId;
+            
+            sessionStorage.setItem('mentariScrollToReplyId', replyId);
+            
             window.location.href = href;
           }
         });
       });
-
-    function scrollToElement() {
-      const notificationId = sessionStorage.getItem("scrollToNotificationId");
-      if (!notificationId) return;
-      sessionStorage.removeItem("scrollToNotificationId");
-      const element = document.getElementById(`notification-${notificationId}`);
-
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-          element.style.transition = "background-color 1s ease";
-          element.style.backgroundColor = "rgba(255, 221, 0, 0.3)";
-          setTimeout(() => {
-            element.style.backgroundColor = "";
-          }, 2000);
-        }, 100);
-      }
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", scrollToElement);
-    } else {
-      setTimeout(scrollToElement, 0);
-    }
   }
+
+  function checkAndScrollOnLoad() {
+    const targetReplyId = sessionStorage.getItem('mentariScrollToReplyId');
+    if (!targetReplyId) return;
+
+    sessionStorage.removeItem('mentariScrollToReplyId');
+
+    const MAX_ATTEMPTS = 20;
+    let attempts = 0;
+    
+    const checkInterval = setInterval(() => {
+        attempts++;
+        const replyElement = document.getElementById(targetReplyId);
+        if (replyElement) {
+            clearInterval(checkInterval);
+
+            replyElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+
+            replyElement.style.transition = 'background-color 1.5s ease'; 
+            replyElement.style.backgroundColor = 'rgba(255, 221, 0, 0.4)';
+            
+            setTimeout(() => {
+                replyElement.style.backgroundColor = '';
+            }, 2000);
+
+        } else if (attempts >= MAX_ATTEMPTS) {
+            clearInterval(checkInterval);
+            console.warn(`[MENTARI MOD] Gagal menemukan balasan ID #${targetReplyId} setelah ${MAX_ATTEMPTS} kali coba.`);
+        }
+    }, 500);
+  }
+  
+  checkAndScrollOnLoad();
 
   function processAndSortCourses(courseList) {
     const dayOrderMap = { 'Minggu': 0, 'Senin': 1, 'Selasa': 2, 'Rabu': 3, 'Kamis': 4, 'Jumat': 5, 'Sabtu': 6 };
@@ -1751,7 +1761,7 @@ async function updateForumUI(courseDataList) {
     if (!forumList) return;
 
     const updateStatus = await checkForNotificationUpdate();
-    const localVersion = typeof window.mentariModVersion !== 'undefined' ? window.mentariModVersion : '5.7';
+    const localVersion = typeof window.mentariModVersion !== 'undefined' ? window.mentariModVersion : '6.1';
     const latestVersion = updateStatus ? updateStatus.updateAvailable : null;
 
     let html = '';
@@ -2532,23 +2542,32 @@ async function fetchForumReplies(topicId) {
             reply.post_type === "REPLY" &&
             reply.id_parent === mainTopicId
         );
-        const lecturerReplies = allReplies.filter(
+
+        const repliesToMyPosts = allReplies.filter(
           (reply) =>
-            reply.id_dosen &&
             reply.post_type === "REPLY" &&
+            reply.nim !== currentUserNIM &&
             studentPosts.some((post) => post.id === reply.id_parent)
         );
 
-        lecturerReplies.forEach((reply) => {
+        repliesToMyPosts.forEach((reply) => {
+
+          const isLecturer = !!reply.id_dosen;
+          const replierName = isLecturer
+            ? (reply.dosen?.nama_gelar || reply.dosen?.nama_dosen || "Dosen")
+            : (reply.mahasiswa?.nama_mahasiswa || reply.nim || "Mahasiswa");
+            
+          const notificationType = isLecturer ? "lecturer_reply" : "student_reply";
+
           const notification = {
             id: reply.id,
             kode_course: reply.kode_course,
             id_trx_course_sub_section: reply.id_trx_course_sub_section,
-            judul: reply.judul || "Balasan Dosen",
+            judul: reply.judul || `Balasan dari ${replierName}`,
             post_type: reply.post_type,
             createdAt: reply.createdAt,
-            lecturerName:
-              reply.dosen?.nama_gelar || reply.dosen?.nama_dosen || "Dosen",
+            lecturerName: replierName,
+            isLecturer: isLecturer,
             topicId: topicId,
             forumId: mainTopic?.id_trx_course_sub_section || topicId,
             content: reply.konten
@@ -2563,7 +2582,7 @@ async function fetchForumReplies(topicId) {
           if (existingIndex === -1) {
             lecturerNotifications.unshift({
               ...notification,
-              type: "lecturer_reply",
+              type: notificationType,
               title: notification.judul,
               parentId: reply.id_parent,
               courseCode: reply.kode_course,

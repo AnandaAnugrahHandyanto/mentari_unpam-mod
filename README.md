@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/bc206a62-4b37-4064-a1af-872e7a157463" width="200" alt="MENTARI Logo">
+  <img src="assets/icons/icon.png" width="200" alt="MENTARI Logo">
+</div>
 
 # MENTARI MOD
 
@@ -35,7 +36,7 @@
 Dengan antarmuka modern berkonsep **"Glassmorphism"**, akses fitur yang lebih cepat, dan integrasi kecerdasan buatan (AI), MENTARI MOD bertujuan untuk membuat proses belajar menjadi lebih efisien, produktif, dan menyenangkan.
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/13180860-d3fd-4a38-8043-9171dc8d4a17" width="85%" alt="Mentari Mod Preview">
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/168060635/511134239-2486133a-fcae-4681-b462-ef3a963d0e46.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20251107%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251107T053012Z&X-Amz-Expires=300&X-Amz-Signature=0c85e0b65b0c271900910a4064aef99108f8f0c362f1dda3d8add013e51e9596&X-Amz-SignedHeaders=host" width="85%" alt="Mentari Mod Preview">
 </div>
 
 -----
@@ -61,7 +62,7 @@ MENTARI MOD hadir dengan berbagai fitur yang dirancang untuk membantu mahasiswa.
 
 -----
 
-## 📦 Instalasi
+<!-- ## 📦 Instalasi
 
 ### 📺 **Video Tutorial**
 
@@ -70,13 +71,13 @@ MENTARI MOD hadir dengan berbagai fitur yang dirancang untuk membantu mahasiswa.
 <img src="https://img.youtube.com/vi/4CDs7ZwEq0c/0.jpg" width="60%" alt="Tutorial Video">
 <p>Klik untuk menonton tutorial instalasi lengkap</p>
 </a>
-</div>
+</div> -->
 
 ### **💻 Windows/macOS (Browser Berbasis Chromium)**
 
 > Langkah-langkah ini berlaku untuk Google Chrome, Microsoft Edge, Brave, dll.
 
-1.  Unduh file **`MentariEnhancer_v6.0.zip`** dari [halaman rilis terbaru](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest).
+1.  Unduh file **`MentariEnhancer_v6.1.zip`** dari [halaman rilis terbaru](https://github.com/AnandaAnugrahHandyanto/mentari_unpam-mod/releases/latest).
 2.  Ekstrak file `.zip` tersebut ke sebuah folder.
 3.  Buka browser Anda dan navigasi ke `chrome://extensions/`.
 4.  Aktifkan **"Mode Pengembang"** (Developer Mode) di pojok kanan atas.
@@ -86,7 +87,7 @@ MENTARI MOD hadir dengan berbagai fitur yang dirancang untuk membantu mahasiswa.
 ### **📱 Android & iOS (Mises Browser)**
 
 1.  Unduh **Mises Browser** dari App Store atau Play Store.
-2.  Buka Mises Browser, unduh file **`MentariEnhancer_v6.0.zip`**.
+2.  Buka Mises Browser, unduh file **`MentariEnhancer_v6.1.zip`**.
 3.  Ketuk menu (tiga titik) dan pilih **"Extensions"**.
 4.  Aktifkan **"Developer Mode"**.
 5.  Klik **"+ (from .zip/.crx/.user.js)"** dan pilih file `.zip` yang sudah diunduh.
