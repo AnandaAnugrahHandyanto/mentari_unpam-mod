@@ -1537,7 +1537,7 @@ function extractCourseCodeFromUrl(url) {
                   </div>
                   <div class="dev-links">
                       <a href="https://instagram.com/nando_fiingerstyle" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                      <a href="https://t.me/Vynix77" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+                      <a href="https://t.me/Savarez77" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
                       <a href="https://github.com/AnandaAnugrahHandyanto" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
                   </div>
               </div>
